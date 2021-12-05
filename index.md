@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-## piplines for single cell datasets
-
-=======
 ## Pipelines
->>>>>>> 694db70b46f48c15a7f8976763362bf1b515c7dd
 
 You can use the [editor on GitHub](https://github.com/Pinlyu3/JQ_lab_pipeline/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
