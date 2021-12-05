@@ -1,14 +1,11 @@
 ## Pipelines
 
-Pipelines for [Chromium Single Cell Multiome ATAC + Gene Expression](#single-cell-multiome-atac-+-rna)
+Pipelines for [Chromium Single Cell Multiome ATAC + Gene Expression](#multiome-cellranger)
 
 
 
-### Single Cell Multiome ATAC + RNA
+### Multiome cellranger
 
-
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
 ```markdown
 Syntax highlighted code block
