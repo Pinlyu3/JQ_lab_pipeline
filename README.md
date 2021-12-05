@@ -1,3 +1,5 @@
 # QJ_lab_pipeline
  
-main page in:  
+Go to the [main page](https://pinlyu3.github.io/JQ_lab_pipeline/)
+
+
