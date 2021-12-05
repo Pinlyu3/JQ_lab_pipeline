@@ -1,6 +1,6 @@
 ## Pipelines
 
-Pipelines for [Chromium Single Cell Multiome ATAC + Gene Expression](#multiome-cellranger)
+1. Pipelines for [Chromium Single Cell Multiome ATAC + Gene Expression](#multiome-cellranger)
 
 
 
