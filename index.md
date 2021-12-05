@@ -3,8 +3,56 @@
 1. Pipelines for [Chromium Single Cell Multiome ATAC + Gene Expression](#multiome-cellranger)
 
 
-
 ### Multiome cellranger
+
+first processing the scRNAseq from the multiome datasets
+
+in this example, the output of cellranger-arc is:
+```r
+cellranger_folder = '/zp1/data/Share/Fish/Multiome/54hrLD/'
+```
+we use the matrix and annotation in the filtered_feature_bc_matrix folder:
+```r
+matrix_folder = '/zp1/data/Share/Fish/Multiome/54hrLD/outs/filtered_feature_bc_matrix'
+```
+
+#### RNA_Step1: covert to seurat obj
+step1: read the mat to seurat and plot the QC 
+
+package needed: Seurat Matrix
+
+MT_tags: mouse: '~~mt-'
+MT_tags: fish: '~~mt-'
+MT_tags: human: '~~MT-'
+
+```r
+#### load the functions from github ######
+
+
+#### set parameters #####
+matrix_folder = '/zp1/data/Share/Fish/Multiome/54hrLD/outs/filtered_feature_bc_matrix'
+output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
+output_tags = '54hr_LD_202112'
+
+
+#### 
+
+
+
+
+```
+
+
+
+
+
+#### RNA_Step2: covert to seurat obj
+
+
+
+
+
+
 
 
 ```markdown
