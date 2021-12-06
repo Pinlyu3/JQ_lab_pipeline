@@ -19,7 +19,7 @@ matrix_folder = '/zp1/data/Share/Fish/Multiome/54hrLD/outs/filtered_feature_bc_m
 #### RNA_Step1: covert to seurat obj
 step1: read the mat to seurat and plot the QC 
 
-package needed: Seurat Matrix
+package needed: Seurat Matrix devtools
 
 MT_tags: mouse: '~~mt-'
 MT_tags: fish: '~~mt-'
