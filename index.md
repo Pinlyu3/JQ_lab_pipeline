@@ -16,7 +16,7 @@ we use the matrix and annotation in the filtered_feature_bc_matrix folder:
 matrix_folder = '/zp1/data/Share/Fish/Multiome/54hrLD/outs/filtered_feature_bc_matrix'
 ```
 
-### RNA_Step1: covert to seurat obj
+### RNA_Step1: Covert matrix to SeuratObj
 step1: read the mat to seurat and plot the QC 
 
 package needed: Seurat Matrix devtools
@@ -35,9 +35,26 @@ output_tags = '54hr_LD_202112'
 MT_tags = '~~mt-'
 #### run the Muti_process_S1 function #####
 Muti_process_S1(matrix_folder,output_folder,output_tags,MT_tags)
+#### see the output in the output_folder ######
+#### check the QC plot: output_tags + _rawQC.png ######
 ```
 
-### RNA_Step2: covert to seurat obj
+### RNA_Step2: Clean cells by nCounts,nFeatures and %mt_RNA
+```r
+#### load the functions from github ######
+devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
+#### set parameters accoring to QC plot #####
+nFeature_RNA = c(500,3000) #### nFeature_RNA > 500 & nFeature_RNA < 3000
+nCount_RNA = c(0,10000) #### nCount_RNA > 0 & nCount_RNA < 10000
+mt_RNA = c(0,5) #### mt_RNA > 0 & mt_RNA < 5
+#### run the function ####
+Muti_process_S2(output_folder,output_tags,nFeature_RNA = c(500,3000),nCount_RNA = c(0,10000),mt_RNA = c(0,5))
+```
+
+### RNA_Step3: calculate doublet score using 
+
+
+
 
 
 
