@@ -105,14 +105,6 @@ Before running, make sure R package ArchR installed
 To analysis zebrafish data, we must prepare the genome and gene for ArchR
 because ArchR don't include zebrafish reference (ArchR only contain Mouse / Human reference)
 
-if analysis mouse and human data in ArchR:
-```r
-#### mouse mm10 #########################
-addArchRGenome("mm10")
-#### human hg38 #########################
-addArchRGenome("hg38")
-```
-
 if analysis zebrafish data in ArchR:
 ```r
 devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
@@ -141,18 +133,24 @@ addArchRThreads(threads = 10)
 output_tags = '54hr_LD_202112'
 atac_fragments_file = "/zp1/data/Share/Fish/Multiome/54hrLD/outs/atac_fragments.tsv.gz"
 ####### if zebrafish #######
-geneAnnotation = 
-genomeAnnotation = 
+geneAnnotation = geneAnnotation_GRCz11
+genomeAnnotation = genomeAnnotation_GRCz11
 ####### if human ###########
+addArchRGenome("hg38")
 geneAnnotation = 
 genomeAnnotation = 
 ####### if mouse ###########
+addArchRGenome("mm10")
 geneAnnotation = 
 genomeAnnotation = 
 
 
+####### arrow file output location #####
+output_folder = ''
 
-#######
+
+####### create arrow files #####
+setwd(output_folder)
 ArrowFiles <- createArrowFiles(
   inputFiles = atac_fragments_file,
   sampleNames = output_tags,
@@ -164,28 +162,16 @@ ArrowFiles <- createArrowFiles(
   genomeAnnotation = genomeAnnotation_GRCz11,
   force=T
 )
+
 ```
 
 
-
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
 
 **Bold** and _Italic_ and `Code` text
 
 [Link](url) and ![Image](src)
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
 
 ### Jekyll Themes
 
@@ -194,3 +180,7 @@ Your Pages site will use the layout and styles from the Jekyll theme you have se
 ### Support or Contact
 
 Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+
+When you drink the water, think of those who dug the well. 
+
+
