@@ -179,8 +179,6 @@ Muti_process_ATAC_S2 <- function(TSS_enrich_low,output_folder,output_tags,output
 	library(ArchR)
 	addArchRThreads(threads = 5) 
 	####### on windows #####
-	load('/mnt/d/ArchR_files/geneAnnotation_GRCz11')
-	load('/mnt/d/ArchR_files/genomeAnnotation_GRCz11')
 	#######
 	setwd(output_folder)
 	#######
@@ -220,8 +218,8 @@ Muti_process_ATAC_S2 <- function(TSS_enrich_low,output_folder,output_tags,output
 	Project_1_cl <- ArchRProject(
   		ArrowFiles = ArrowFiles, 
   		outputDirectory = output_folder2,
-  		geneAnnotation = geneAnnotation_GRCz11,
-  		genomeAnnotation = genomeAnnotation_GRCz11,
+  		geneAnnotation = geneAnnotation,
+  		genomeAnnotation = genomeAnnotation,
   		copyArrows = FALSE 
 	)
 	#######
