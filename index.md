@@ -109,7 +109,7 @@ if analysis zebrafish data in ArchR:
 ```r
 devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
 #### we need gtf file for zebrafish genes #####
-gtf = '/zp1/data/Share/Fish/Multiome/Fish_genome/Danio_rerio.GRCz11.104.gtf'
+gtf = '/mnt/d/ArchR_files/Danio_rerio.GRCz11.104.gtf'
 #### ArchR file for gtf ############
 geneAnnotation_GRCz11 = ArchR_zebrafish_genes(gtf)
 
@@ -129,9 +129,10 @@ create arrow files from fragments:
 ```r
 ####### parameter #######
 library(ArchR)
-addArchRThreads(threads = 10) 
+addArchRThreads(threads = 5)
 output_tags = '54hr_LD_202112'
-atac_fragments_file = "/zp1/data/Share/Fish/Multiome/54hrLD/outs/atac_fragments.tsv.gz"
+atac_fragments_file = "/mnt/d/ArchR_files/54hrLD/atac_fragments.tsv.gz"
+
 ####### if zebrafish #######
 setwd('/mnt/d/ArchR_files/')
 load('geneAnnotation_GRCz11')
@@ -140,15 +141,15 @@ geneAnnotation = geneAnnotation_GRCz11
 genomeAnnotation = genomeAnnotation_GRCz11
 ####### if human ###########
 addArchRGenome("hg38")
-geneAnnotation = 
-genomeAnnotation = 
+geneAnnotation = getGeneAnnotation()
+genomeAnnotation = getGenomeAnnotation()
 ####### if mouse ###########
 addArchRGenome("mm10")
-geneAnnotation = 
-genomeAnnotation = 
+geneAnnotation = getGeneAnnotation()
+genomeAnnotation = getGenomeAnnotation()
 
 ####### arrow file output location #####
-output_folder = ''
+output_folder = '/home/lp123/Desktop/54hr_LD'
 
 ####### create arrow files #####
 setwd(output_folder)
@@ -159,13 +160,43 @@ ArrowFiles <- createArrowFiles(
   minFrags = 1000, 
   addTileMat = TRUE,
   addGeneScoreMat = FALSE,
-  geneAnnotation = geneAnnotation_GRCz11,
-  genomeAnnotation = genomeAnnotation_GRCz11,
+  geneAnnotation = geneAnnotation,
+  genomeAnnotation = genomeAnnotation,
   force=T
 )
 
+####### check the QC files in the output_folder ########
 ```
 
+filter cells passed QC:
+```r
+#### filter the cell by TSS enrichment ######
+TSS_enrich_low = 7
+output_folder = '/home/lp123/Desktop/54hr_LD'
+output_tags = '54hr_LD_202112'
+#### mkdir '/home/lp123/Desktop/54hr_LD/54hr_LD_2' ######
+output_folder2 = '/home/lp123/Desktop/54hr_LD/54hr_LD_tmp2'
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+
+####### create 
 
 
 **Bold** and _Italic_ and `Code` text
