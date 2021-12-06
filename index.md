@@ -22,7 +22,9 @@ Read the mat to seurat and plot the QC
 R package needed: Seurat Matrix devtools
 
 MT_tags: mouse should be ~~mt-
+
 MT_tags: fish should be ~~mt-
+
 MT_tags: human should be ~~MT-
 
 ```r
@@ -131,11 +133,38 @@ save(genomeAnnotation_GRCz11,file='genomeAnnotation_GRCz11')
 ```
 
 
+create arrow files from fragments:
+```r
+####### parameter #######
+library(ArchR)
+addArchRThreads(threads = 10) 
+output_tags = '54hr_LD_202112'
+atac_fragments_file = "/zp1/data/Share/Fish/Multiome/54hrLD/outs/atac_fragments.tsv.gz"
+####### if zebrafish #######
+geneAnnotation = 
+genomeAnnotation = 
+####### if human ###########
+geneAnnotation = 
+genomeAnnotation = 
+####### if mouse ###########
+geneAnnotation = 
+genomeAnnotation = 
 
 
 
-
-
+#######
+ArrowFiles <- createArrowFiles(
+  inputFiles = atac_fragments_file,
+  sampleNames = output_tags,
+  minTSS = 4, #Dont set this too high because you can always increase later
+  minFrags = 1000, 
+  addTileMat = TRUE,
+  addGeneScoreMat = FALSE,
+  geneAnnotation = geneAnnotation_GRCz11,
+  genomeAnnotation = genomeAnnotation_GRCz11,
+  force=T
+)
+```
 
 
 
