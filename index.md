@@ -5,7 +5,7 @@
 
 # Multiome cellranger
 
-first processing the scRNAseq from the multiome datasets
+## First processing the scRNAseq from the multiome datasets
 
 in this example, the output of cellranger-arc is:
 ```r
@@ -78,10 +78,24 @@ python Muti_process.py --output_folder='/zp1/data/plyu3/Muti_omic/54hr_LD' --out
 
 then adding the doublet score to the SeuratObject
 ```r
+#### load the functions and set the parameters ######
+devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
+output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
+output_tags = '54hr_LD_202112'
+#### convert seurat to Scrublet input ####
+Muti_process_S4(output_folder,output_tags)
+```
 
+## Next processing the scATACseq from the multiome datasets
 
+in this example, the output of cellranger-arc is:
+```r
+cellranger_folder = '/zp1/data/Share/Fish/Multiome/54hrLD/'
+```
 
-
+we use the fragments in the outs folder:
+```r
+fragments = "/zp1/data/Share/Fish/Multiome/54hrLD/outs/atac_fragments.tsv.gz"
 ```
 
 
