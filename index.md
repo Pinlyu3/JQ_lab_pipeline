@@ -68,7 +68,7 @@ then in the shell, run the script: Muti_process.py
 
 be sure have installed the python packages: scrublet matplotlib scipy numpy os pandas
 
-```python
+```console
 #### download the python code and run ######
 cd /zp1/data/plyu3/Muti_omic
 curl https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.py > Muti_process.py
@@ -77,7 +77,12 @@ python Muti_process.py --output_folder='/zp1/data/plyu3/Muti_omic/54hr_LD' --out
 ```
 
 then adding the doublet score to the SeuratObject
+```r
 
+
+
+
+```
 
 
 
