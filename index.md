@@ -98,6 +98,44 @@ we use the fragments in the outs folder:
 fragments = "/zp1/data/Share/Fish/Multiome/54hrLD/outs/atac_fragments.tsv.gz"
 ```
 
+Before running, make sure R package ArchR installed
+
+To analysis zebrafish data, we must prepare the genome and gene for ArchR
+because ArchR don't include zebrafish reference (ArchR only contain Mouse / Human reference)
+
+if analysis mouse and human data in ArchR:
+```r
+#### mouse mm10 #########################
+addArchRGenome("mm10")
+#### human hg38 #########################
+addArchRGenome("hg38")
+```
+
+```r
+devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
+#### we need gtf file for zebrafish genes #####
+gtf = '/zp1/data/Share/Fish/Multiome/Fish_genome/Danio_rerio.GRCz11.104.gtf'
+#### ArchR file for gtf ############
+geneAnnotation_GRCz11 = ArchR_zebrafish_genes(gtf)
+
+#### we need genome sequence #######
+#### zebrafish #####################
+library("BSgenome.Drerio.UCSC.danRer11")
+genomeAnnotation_GRCz11 <- createGenomeAnnotation(genome = BSgenome.Drerio.UCSC.danRer11)
+
+#### save the reference ############
+setwd('/mnt/d/ArchR_files/')
+save(geneAnnotation_GRCz11,file='geneAnnotation_GRCz11')
+save(genomeAnnotation_GRCz11,file='genomeAnnotation_GRCz11')
+```
+
+
+
+
+
+
+
+
 
 
 Syntax highlighted code block
