@@ -68,3 +68,34 @@ Muti_process_S2 <- function(output_folder,output_tags,nFeature_RNA,nCount_RNA,mt
 }
 
 
+#### Seurat to scrublet input ####
+
+Muti_process_S3 <- function(output_folder,output_tags){
+	#######
+	library(Seurat)
+	#######
+	setwd(output_folder)
+	clean_file = paste(output_tags,'Seurat_RNA_clean',sep='_')
+	print(clean_file)
+	#######
+	x = readRDS(clean_file)
+	#######
+	library(Matrix)
+    mat = x[['RNA']]@counts
+    gene = rownames(mat)
+    gene = data.frame(V1=gene,V2=gene)
+    barcode = colnames(mat)
+    barcode = data.frame(V1=barcode,V2=barcode)
+    ########
+    FN1 = paste(output_tags,'scrublet_mat.mtx',sep='_')
+    FN2 = paste(output_tags,'scrublet_gene.tsv',sep='_')
+    FN3 = paste(output_tags,'scrublet_barcode.tsv',sep='_')
+    writeMM(mat,file=FN1)
+    write.table(gene,file=FN2,sep='\t',quote=F,col.names=F,row.names=F)
+    write.table(barcode,file=FN3,sep='\t',quote=F,col.names=F,row.names=F)
+    ###
+    print('Done!')
+	#######
+}
+
+
