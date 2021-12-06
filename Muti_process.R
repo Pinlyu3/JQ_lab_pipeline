@@ -281,8 +281,6 @@ Muti_process_ATAC_S2_Fish <- function(TSS_enrich_low,output_folder,output_tags,o
 	saveRDS(TileMatrix,file=FN)
 	#######
 	print('Done!')
-	print('upload the server !!!')
-	#######
 	#######
 }
 
