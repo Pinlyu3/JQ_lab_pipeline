@@ -126,3 +126,163 @@ Muti_process_S4 <- function(output_folder,output_tags){
 }
 
 
+####  
+
+ArchR_zebrafish_genes <- function(gtf){
+	library(rtracklayer)
+	library(ArchR)
+	######
+	gtf <- rtracklayer::import(gtf)
+	gtf_df <- as.data.frame(gtf)
+	##### gene #######
+	k = which(gtf_df$type == 'gene')
+	gtf_df_gene = gtf_df[k,]
+	chr = c(1:25)
+	gtf_df_gene = gtf_df_gene[which(gtf_df_gene$seqnames %in% chr == T),]
+	genes_GR = GRanges(seqnames=paste('chr',gtf_df_gene$seqnames,sep=''),IRanges(start=gtf_df_gene$start,end=gtf_df_gene$end),strand=gtf_df_gene$strand,gene_id=gtf_df_gene$gene_id,symbol=gtf_df_gene$gene_name)
+	##### exons ######
+	k = which(gtf_df$type == 'exon')
+	gtf_df_exon = gtf_df[k,]
+	chr = c(1:25)
+	gtf_df_exon = gtf_df_exon[which(gtf_df_exon$seqnames %in% chr == T),]
+	exons_GR = GRanges(seqnames=paste('chr',gtf_df_exon$seqnames,sep=''),IRanges(start=gtf_df_exon$start,end=gtf_df_exon$end),strand=gtf_df_exon$strand,gene_id=gtf_df_exon$gene_id,symbol=gtf_df_exon$gene_name)
+	##### TSS ######
+	gtf_df_trans = gtf_df[which(gtf_df$type == 'transcript'),]
+	chr = c(1:25)
+	gtf_df_trans = gtf_df_trans[which(gtf_df_trans$seqnames %in% chr == T),]
+	trans_GR = GRanges(seqnames=paste('chr',gtf_df_trans$seqnames,sep=''),IRanges(start=gtf_df_trans$start,end=gtf_df_trans$end),strand=gtf_df_trans$strand,tx_id=gtf_df_trans$transcript_id,tx_name=gtf_df_trans$transcript_name)
+	k_plus = which(as.character(strand(trans_GR)) == '+')
+	k_minus = which(as.character(strand(trans_GR)) == '-')
+	k_plus_TSS = start(trans_GR)[k_plus]
+	k_minus_TSS = end(trans_GR)[k_minus]
+	TSS_GR = trans_GR
+	end(TSS_GR)[k_plus] = k_plus_TSS
+	start(TSS_GR)[k_minus] = k_minus_TSS
+	###### 
+	geneAnnotation_GRCz11 <- ArchR::createGeneAnnotation(
+  		TSS = TSS_GR,
+  		exons = exons_GR,
+  		genes = genes_GR
+	)
+	######
+	return(geneAnnotation_GRCz11)
+}
+
+
+
+
+####
+
+Muti_process_ATAC_S1_Fish <- function(atac_fragments_file,output_folder,output_tags){
+	#######
+	library(ArchR)
+	addArchRThreads(threads = 7) 
+	####### on windows #####
+	load('/mnt/d/ArchR_files/geneAnnotation_GRCz11')
+	load('/mnt/d/ArchR_files/genomeAnnotation_GRCz11')
+	#######
+	setwd(output_folder)
+	#######
+	ArrowFiles <- createArrowFiles(
+  		inputFiles = atac_fragments_file,
+  		sampleNames = output_tags,
+  		minTSS = 4, #Dont set this too high because you can always increase later
+  		minFrags = 1000, 
+  		addTileMat = TRUE,
+  		addGeneScoreMat = FALSE,
+  		geneAnnotation = geneAnnotation_GRCz11,
+  		genomeAnnotation = genomeAnnotation_GRCz11,
+  		force=T
+  	)
+	#######
+	print('Done!')
+	print('check the QC !!!')
+	#######
+}
+
+
+
+
+Muti_process_ATAC_S2_Fish <- function(TSS_enrich_low,output_folder,output_tags,output_folder2){
+	#######
+	library(ArchR)
+	addArchRThreads(threads = 7) 
+	####### on windows #####
+	load('/mnt/d/ArchR_files/geneAnnotation_GRCz11')
+	load('/mnt/d/ArchR_files/genomeAnnotation_GRCz11')
+	#######
+	setwd(output_folder)
+	#######
+	ArrowFiles = paste(output_tags,'.arrow',sep='')
+	#######
+	Project_1 <- ArchRProject(
+  		ArrowFiles = ArrowFiles, 
+  		outputDirectory = output_folder2,
+  		geneAnnotation = geneAnnotation_GRCz11,
+  		genomeAnnotation = genomeAnnotation_GRCz11,
+  		copyArrows = TRUE #This is recommened so that if you modify the Arrow files you have an original copy for later usage.
+	)
+	#######
+	setwd(output_folder)
+	FN = paste(output_tags,'ArchR_raw',sep='_')
+	saveRDS(Project_1,file=FN)
+	#######
+	idxPass <- which(Project_1$TSSEnrichment >= TSS_enrich_low)
+	cellsPass <- Project_1$cellNames[idxPass]
+	Project_1_cl = Project_1[cellsPass, ]
+	print(length(Project_1$TSSEnrichment))
+	print(length(cellsPass))
+	#######
+	#######
+	#### calculate the doublets #####
+	#######
+	doubScores <- addDoubletScores(
+    	input = Project_1_cl,
+    	k = 10, #Refers to how many cells near a "pseudo-doublet" to count.
+    	knnMethod = "UMAP", #Refers to the embedding to use for nearest neighbor search with doublet projection.
+    	LSIMethod = 1,
+    	force=T
+	)
+	#######
+	setwd(output_folder2)
+	setwd('ArrowFiles')
+	Project_1_cl <- ArchRProject(
+  		ArrowFiles = ArrowFiles, 
+  		outputDirectory = output_folder2,
+  		geneAnnotation = geneAnnotation_GRCz11,
+  		genomeAnnotation = genomeAnnotation_GRCz11,
+  		copyArrows = FALSE 
+	)
+	#######
+	setwd(output_folder)
+	FN = paste(output_tags,'ArchR_cl',sep='_')
+	saveRDS(Project_1_cl,file=FN)
+	#######
+	tab_Dob = data.frame(cellNames = Project_1_cl$cellNames,DoubletScore =Project_1_cl$DoubletEnrichment)
+	summary(Project_1_cl$DoubletEnrichment)
+	#######
+	setwd(output_folder)
+	FN = paste(output_tags,'ArchR_doublet.txt',sep='_')
+	write.table(tab_Dob,file=FN,row.names=F,sep='\t',quote=F,col.names=F)
+	####### Output the tile matrix ##########
+	TileMatrix = getMatrixFromProject(
+  		ArchRProj = Project_1_cl,
+  		useMatrix = "TileMatrix",
+  		useSeqnames = NULL,
+  		verbose = TRUE,
+  		binarize = T,
+  		threads = getArchRThreads(),
+  		logFile = createLogFile("getMatrixFromProject")
+	)
+	#######
+	FN = paste(output_tags,'ArchR_tileMat',sep='_')
+	#######
+	setwd(output_folder)
+	saveRDS(TileMatrix,file=FN)
+	#######
+	print('Done!')
+	print('upload the server !!!')
+	#######
+	#######
+}
+
