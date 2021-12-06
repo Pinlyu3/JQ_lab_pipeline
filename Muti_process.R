@@ -203,7 +203,7 @@ Muti_process_ATAC_S2 <- function(TSS_enrich_low,output_folder,output_tags,output
 	print(length(cellsPass))
 	#######
 	#######
-	#### calculate the doublets #####
+	#### calculate the doublets on the filtered ArchR project #####
 	#######
 	doubScores <- addDoubletScores(
     	input = Project_1_cl,
