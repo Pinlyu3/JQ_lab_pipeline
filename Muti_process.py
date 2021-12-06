@@ -47,5 +47,6 @@ def scrublet_process(folder,index,doublet_rate=0.1):
     Output_FN = index + '_scrublet_res.tsv'
     barcodes_pd.to_csv(Output_FN,sep='\t',index=0,header=0)
 
+scrublet_process(folder,index,doublet_rate=0.1)
 ######
 ######
