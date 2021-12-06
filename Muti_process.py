@@ -20,11 +20,15 @@ args = p.parse_args()
 folder = args.output_folder
 index = args.output_tags
 
+print folder
+print index
+
+
 def scrublet_process(folder,index,doublet_rate=0.1):
-    input_dir = folder
-    counts_matrix = scipy.io.mmread(input_dir + index + '_scrublet_mat.mtx').T.tocsc()
-    genes = np.array(scr.load_genes(input_dir + index + '_scrublet_gene.tsv', delimiter='\t', column=1))
-    barcodes = np.array(scr.load_genes(input_dir + index + '_scrublet_barcode.tsv', delimiter='\t', column=1))
+    os.chdir(folder)
+    counts_matrix = scipy.io.mmread(index + '_scrublet_mat.mtx').T.tocsc()
+    genes = np.array(scr.load_genes(index + '_scrublet_gene.tsv', delimiter='\t', column=1))
+    barcodes = np.array(scr.load_genes(index + '_scrublet_barcode.tsv', delimiter='\t', column=1))
     #####
     print (input_dir + index + '_scrublet_mat.mtx')
     #####
