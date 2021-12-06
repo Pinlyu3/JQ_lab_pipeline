@@ -194,8 +194,15 @@ output_tags = '54hr_LD_202112'
 Muti_process_S5(output_folder,output_tags)
 ```
 
+dimension reduction of scRNA-seq matrix
+```r
+devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
+output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
+output_tags = '54hr_LD_202112'
+Muti_process_S6(output_folder,output_tags)
 
 
+```
 
 
 
@@ -207,6 +214,5 @@ Your Pages site will use the layout and styles from the Jekyll theme you have se
 
 Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
 
-### It works well? cheers 
-<img src="https://i.imgur.com/RrYhTGq.gif"/>
-
+### It works well? cheers
+<img src="https://i.imgur.com/ZUeCbT5.gif" width=1000>
