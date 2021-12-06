@@ -307,8 +307,7 @@ Muti_process_S6 <- function(output_folder,output_tags){
 	######
 	######
 	setwd(output_folder)
-	png_file = paste(output_tags,'_doubles.png',sep='')
-	######
+	png_file = paste(output_tags,'_cluster.png',sep='')
 	library(ggplot2)
 	png(png_file,height=4000,width=6000,res=72*12)
 	print(DimPlot(x, reduction = "umap.rna", group.by = "seurat_clusters", label = TRUE, label.size = 2.5, repel = TRUE) + ggtitle("RNA_umap"))
