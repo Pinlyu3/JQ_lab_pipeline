@@ -99,3 +99,30 @@ Muti_process_S3 <- function(output_folder,output_tags){
 }
 
 
+
+#### Merge the scrublet score to seurat_obj ####
+
+Muti_process_S4 <- function(output_folder,output_tags){
+	#######
+	library(Seurat)
+	#######
+	setwd(output_folder)
+	clean_file = paste(output_tags,'Seurat_RNA_clean',sep='_')
+	print(clean_file)
+	#######
+	x = readRDS(clean_file)
+	#######
+	FN4 = paste(output_tags,'scrublet_res.tsv',sep='_')
+	score = read.table(FN4,sep='\t')
+    ###
+    m = match(colnames(x),score$V1)
+    x$scrublet = score$V2[m]
+    print(summary(x$scrublet))
+    #######
+    clean_file = paste(output_tags,'Seurat_RNA_clean_S',sep='_')
+	saveRDS(x,file=clean_file)
+    print('Done!')
+	#######
+}
+
+
