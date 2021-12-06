@@ -20,8 +20,8 @@ args = p.parse_args()
 folder = args.output_folder
 index = args.output_tags
 
-print folder
-print index
+print(folder)
+print(index)
 
 
 def scrublet_process(folder,index,doublet_rate=0.1):
