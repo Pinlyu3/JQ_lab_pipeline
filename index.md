@@ -177,9 +177,7 @@ output_folder = '/home/lp123/Desktop/54hr_LD'
 output_tags = '54hr_LD_202112'
 #### mkdir '/home/lp123/Desktop/54hr_LD/54hr_LD_2' ######
 output_folder2 = '/home/lp123/Desktop/54hr_LD/54hr_LD_tmp2'
-
 Muti_process_ATAC_S2(TSS_enrich_low,output_folder,output_tags,output_folder2,geneAnnotation,genomeAnnotation)
-
 #### 
 ```
 
