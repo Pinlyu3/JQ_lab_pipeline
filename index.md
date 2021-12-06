@@ -111,6 +111,7 @@ addArchRGenome("mm10")
 addArchRGenome("hg38")
 ```
 
+if analysis zebrafish data in ArchR:
 ```r
 devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
 #### we need gtf file for zebrafish genes #####
