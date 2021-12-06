@@ -17,13 +17,13 @@ matrix_folder = '/zp1/data/Share/Fish/Multiome/54hrLD/outs/filtered_feature_bc_m
 ```
 
 ### RNA_Step1: Covert matrix to SeuratObj
-step1: read the mat to seurat and plot the QC 
+Read the mat to seurat and plot the QC 
 
-package needed: Seurat Matrix devtools
+R package needed: Seurat Matrix devtools
 
-MT_tags: mouse "~~mt-"
-MT_tags: fish "~~mt-"
-MT_tags: human "~~MT-"
+MT_tags: mouse should be ~~mt-
+MT_tags: fish should be ~~mt-
+MT_tags: human should be ~~MT-
 
 ```r
 #### load the functions from github ######
@@ -66,7 +66,7 @@ Muti_process_S3(output_folder,output_tags)
 
 then in the shell, run the script: Muti_process.py
 
-be sure have installed the python packages: scrublet matplotlib scipy numpy os pandas
+be sure have installed these python packages: scrublet matplotlib scipy numpy os pandas
 
 ```console
 #### download the python code and run ######
