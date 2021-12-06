@@ -170,39 +170,35 @@ ArrowFiles <- createArrowFiles(
 
 filter cells passed QC:
 ```r
-#### filter the cell by TSS enrichment ######
+#### filter the cell by TSS enrichment and calculate doublets ######
+devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
 TSS_enrich_low = 7
 output_folder = '/home/lp123/Desktop/54hr_LD'
 output_tags = '54hr_LD_202112'
 #### mkdir '/home/lp123/Desktop/54hr_LD/54hr_LD_2' ######
 output_folder2 = '/home/lp123/Desktop/54hr_LD/54hr_LD_tmp2'
 
+Muti_process_ATAC_S2(TSS_enrich_low,output_folder,output_tags,output_folder2,geneAnnotation,genomeAnnotation)
+
+#### 
+```
 
 
+## Last integrate the scRNAseq and scATACseq files 
 
+copy the doublet file and tileMat file to the scRNAseq folder:
+output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
 
-
-
-
-
-
-
-
-
+```r
+devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
+output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
+output_tags = '54hr_LD_202112'
+Muti_process_S5(output_folder,output_tags)
 ```
 
 
 
 
-
-
-####### create 
-
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
 
 
 ### Jekyll Themes
