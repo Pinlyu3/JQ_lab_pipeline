@@ -133,6 +133,9 @@ addArchRThreads(threads = 10)
 output_tags = '54hr_LD_202112'
 atac_fragments_file = "/zp1/data/Share/Fish/Multiome/54hrLD/outs/atac_fragments.tsv.gz"
 ####### if zebrafish #######
+setwd('/mnt/d/ArchR_files/')
+load('geneAnnotation_GRCz11')
+load('genomeAnnotation_GRCz11')
 geneAnnotation = geneAnnotation_GRCz11
 genomeAnnotation = genomeAnnotation_GRCz11
 ####### if human ###########
@@ -144,10 +147,8 @@ addArchRGenome("mm10")
 geneAnnotation = 
 genomeAnnotation = 
 
-
 ####### arrow file output location #####
 output_folder = ''
-
 
 ####### create arrow files #####
 setwd(output_folder)
@@ -181,6 +182,5 @@ Your Pages site will use the layout and styles from the Jekyll theme you have se
 
 Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
 
-**When you drink the water, think of those who dug the well.**
-
+### It works well? cheers 
 
