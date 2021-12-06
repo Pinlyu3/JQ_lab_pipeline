@@ -21,9 +21,9 @@ step1: read the mat to seurat and plot the QC
 
 package needed: Seurat Matrix devtools
 
-MT_tags: mouse: '~~mt-'
-MT_tags: fish: '~~mt-'
-MT_tags: human: '~~MT-'
+MT_tags: mouse "~~mt-"
+MT_tags: fish "~~mt-"
+MT_tags: human "~~MT-"
 
 ```r
 #### load the functions from github ######
@@ -33,20 +33,11 @@ matrix_folder = '/zp1/data/Share/Fish/Multiome/54hrLD/outs/filtered_feature_bc_m
 output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
 output_tags = '54hr_LD_202112'
 MT_tags = '~~mt-'
-output_tags = '54hr_LD'
-####
-
-
-
-
-
+#### run the Muti_process_S1 function #####
+Muti_process_S1(matrix_folder,output_folder,output_tags,MT_tags)
 ```
 
-
-
-
-
-#### RNA_Step2: covert to seurat obj
+### RNA_Step2: covert to seurat obj
 
 
 
