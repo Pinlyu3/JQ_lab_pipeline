@@ -30,7 +30,7 @@ def scrublet_process(folder,index,doublet_rate=0.1):
     genes = np.array(scr.load_genes(index + '_scrublet_gene.tsv', delimiter='\t', column=1))
     barcodes = np.array(scr.load_genes(index + '_scrublet_barcode.tsv', delimiter='\t', column=1))
     #####
-    print (input_dir + index + '_scrublet_mat.mtx')
+    print (index + '_scrublet_mat.mtx')
     #####
     scrub = scr.Scrublet(counts_matrix,expected_doublet_rate=doublet_rate)
     doublet_scores, predicted_doublets = scrub.scrub_doublets(min_counts=2, 
