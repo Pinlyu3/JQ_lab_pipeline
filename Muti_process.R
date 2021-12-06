@@ -173,40 +173,11 @@ ArchR_zebrafish_genes <- function(gtf){
 
 ####
 
-Muti_process_ATAC_S1_Fish <- function(atac_fragments_file,output_folder,output_tags){
+
+Muti_process_ATAC_S2 <- function(TSS_enrich_low,output_folder,output_tags,output_folder2,geneAnnotation,genomeAnnotation){
 	#######
 	library(ArchR)
-	addArchRThreads(threads = 7) 
-	####### on windows #####
-	load('/mnt/d/ArchR_files/geneAnnotation_GRCz11')
-	load('/mnt/d/ArchR_files/genomeAnnotation_GRCz11')
-	#######
-	setwd(output_folder)
-	#######
-	ArrowFiles <- createArrowFiles(
-  		inputFiles = atac_fragments_file,
-  		sampleNames = output_tags,
-  		minTSS = 4, #Dont set this too high because you can always increase later
-  		minFrags = 1000, 
-  		addTileMat = TRUE,
-  		addGeneScoreMat = FALSE,
-  		geneAnnotation = geneAnnotation_GRCz11,
-  		genomeAnnotation = genomeAnnotation_GRCz11,
-  		force=T
-  	)
-	#######
-	print('Done!')
-	print('check the QC !!!')
-	#######
-}
-
-
-
-
-Muti_process_ATAC_S2_Fish <- function(TSS_enrich_low,output_folder,output_tags,output_folder2){
-	#######
-	library(ArchR)
-	addArchRThreads(threads = 7) 
+	addArchRThreads(threads = 5) 
 	####### on windows #####
 	load('/mnt/d/ArchR_files/geneAnnotation_GRCz11')
 	load('/mnt/d/ArchR_files/genomeAnnotation_GRCz11')
@@ -218,8 +189,8 @@ Muti_process_ATAC_S2_Fish <- function(TSS_enrich_low,output_folder,output_tags,o
 	Project_1 <- ArchRProject(
   		ArrowFiles = ArrowFiles, 
   		outputDirectory = output_folder2,
-  		geneAnnotation = geneAnnotation_GRCz11,
-  		genomeAnnotation = genomeAnnotation_GRCz11,
+  		geneAnnotation = geneAnnotation,
+  		genomeAnnotation = genomeAnnotation,
   		copyArrows = TRUE #This is recommened so that if you modify the Arrow files you have an original copy for later usage.
 	)
 	#######
