@@ -1,1 +1,5 @@
+url: 'https://pinlyu3.github.io/' # your main domain
+
+baseurl: ''
+
 theme: jekyll-theme-cayman
