@@ -51,19 +51,36 @@ mt_RNA = c(0,5) #### mt_RNA > 0 & mt_RNA < 5
 Muti_process_S2(output_folder,output_tags,nFeature_RNA = c(500,3000),nCount_RNA = c(0,10000),mt_RNA = c(0,5))
 ```
 
-### RNA_Step3: calculate doublet score using 
+### RNA_Step3: Calculate doublet score using Scrublet
+
+prepare the input to Scrublet
+```r
+#### load the functions from github ######
+devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
+#### set parameters #####
+output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
+output_tags = '54hr_LD_202112'
+#### convert seurat to Scrublet input ####
+Muti_process_S3(output_folder,output_tags)
+```
+
+then in the shell, run the script: Muti_process.py
+
+be sure have installed the python packages: scrublet matplotlib scipy numpy os pandas
+
+```python
+#### download the python code and run ######
+cd /zp1/data/plyu3/Muti_omic
+curl https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.py > Muti_process.py
+#### run Scrublet #####
+python Muti_process.py --output_folder='/zp1/data/plyu3/Muti_omic/54hr_LD' --output_tags='54hr_LD_202112'
+```
+
+then adding the doublet score to the SeuratObject
 
 
 
 
-
-
-
-
-
-
-
-```markdown
 Syntax highlighted code block
 
 # Header 1
