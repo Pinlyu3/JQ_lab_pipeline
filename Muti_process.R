@@ -253,3 +253,37 @@ Muti_process_ATAC_S2 <- function(TSS_enrich_low,output_folder,output_tags,output
 	#######
 }
 
+
+
+#### merge the ArchR doublet score #####
+Muti_process_S5 <- function(output_folder,output_tags){
+	#######
+	library(Seurat)
+	#######
+	setwd(output_folder)
+	clean_file = paste(output_tags,'Seurat_RNA_clean_S',sep='_')
+	print(clean_file)
+	#######
+	x = readRDS(clean_file)
+	#######
+	FN5 = paste(output_tags,'ArchR_doublet.txt',sep='_')
+	#######
+	ArchR_doub = read.table(FN5,sep='\t',header=F,comment.char = "")
+	#######
+    ArchR_doub$Cells = sapply(strsplit(as.character(ArchR_doub$V1),split='#',fixed=T),function(x) x[[2]])
+    #######
+    m = match(colnames(x),ArchR_doub$Cells)
+    x$ArchR = ArchR_doub$V2[m]
+    #######
+    print(summary(x$ArchR))
+    #######
+    clean_file = paste(output_tags,'Seurat_RNA_clean_SS',sep='_')
+    setwd(output_folder)
+	saveRDS(x,file=clean_file)
+    print('Done!')
+	#######
+}
+
+
+
+
