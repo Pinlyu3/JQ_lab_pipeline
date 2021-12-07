@@ -230,10 +230,10 @@ annotation of the cells by Seurat CCA method
 devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
 output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
 output_tags = '54hr_LD_202112'
-Muti_process_S8(output_folder,output_tags)
+
+Muti_process_S9(output_folder,output_tags)
 
 ```
-
 
 ### The Part of RNA velocity analysis will coming soon !!!
 
