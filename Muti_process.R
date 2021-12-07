@@ -427,7 +427,7 @@ Muti_process_S8 <- function(output_folder,output_tags){
 	x = readRDS(clean_file)
 	##### WNN graph ########
 	######
-	x <- FindMultiModalNeighbors(x, reduction.list = list("pca", "svd"), dims.list = list(1:50, 2:50))
+	x <- FindMultiModalNeighbors(x, reduction.list = list("pca", "lsi"), dims.list = list(1:50, 2:50))
 	x <- RunUMAP(x, nn.name = "weighted.nn", reduction.name = "wnn.umap", reduction.key = "wnnUMAP_",dims = 1:35)
 	x <- FindClusters(x, graph.name = "wsnn", algorithm = 3, verbose = FALSE, resolution=0.3)
 	######
@@ -444,6 +444,14 @@ Muti_process_S8 <- function(output_folder,output_tags){
 	######
 	print('done!!!')
 }
+
+
+
+
+####
+
+
+
 
 
 
