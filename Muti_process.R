@@ -334,3 +334,120 @@ Muti_process_S6 <- function(output_folder,output_tags){
 
 
 
+
+###### adding tilematrix to the seurat ##############
+###### adding the tilematrix to the Seurat ##########
+
+Muti_process_S7 <- function(output_folder,output_tags){
+	library(Seurat)
+	#######
+	setwd(output_folder)
+	clean_file = paste(output_tags,'Seurat_RNA_clean_SSS',sep='_')
+	print(clean_file)
+	#######
+	x = readRDS(clean_file)
+	###### rm cells not passed QC in scATACSeq #####
+	k = which(x$ArchR == -1 | is.na(x$ArchR) == T)
+	if(length(k) > 0){
+		x = x[,-k]
+	}
+	######
+	######
+	######
+	library(future)
+	plan("multicore", workers = 2)
+	options(future.globals.maxSize = 10000 * 1024^2)
+	###### read the tileMatrix ######
+	library(SummarizedExperiment)
+	tileM_FN = paste(output_tags,'_ArchR_tileMat',sep='')
+	tileMat = readRDS(tileM_FN)
+	######
+	tileMat_matrix = tileMat@assays@data[[1]]
+	######
+	rowData_tileMat = rowData(tileMat)
+	rowNames = paste(rowData_tileMat$seqnames,rowData_tileMat$start,sep=':')
+	rowNames = paste(rowNames,rowData_tileMat$start+499,sep='-')
+	###### clean the matrix #######
+	###### clean the regions ######
+	rowSums_Mat = Matrix::rowSums(tileMat_matrix)
+	cutoff_Mat = rowSums_Mat[order(rowSums_Mat,decreasing=T)][500000]
+	######
+	rownames(tileMat_matrix) = rowNames
+	tileMat_matrix_cl = tileMat_matrix[which(rowSums_Mat >= cutoff_Mat),]
+	###### clean the column #######
+	colNames = sapply(strsplit(colnames(tileMat_matrix_cl),split='#',fixed=T),function(x) x[[2]])
+	colnames(tileMat_matrix_cl) = colNames
+	######
+	k = which(colnames(tileMat_matrix_cl) %in% colnames(x) == T)
+	tileMat_matrix_clcl = tileMat_matrix_cl[,k]
+	print(dim(tileMat_matrix_clcl))
+	######
+	library(Signac)
+	library(dplyr)
+	######
+	ATAC_Obj <- CreateAssayObject(
+   		counts = tileMat_matrix_clcl
+ 	)
+ 	######
+ 	x[["ATAC"]] <- ATAC_Obj
+	###### Dim reduction on 'ATAC' ###########
+	DefaultAssay(x) <- "ATAC"
+	x <- RunTFIDF(x)
+	x <- FindTopFeatures(x, min.cutoff = 'q0')
+	x <- RunSVD(x)
+	x <- RunUMAP(x, reduction = 'lsi', dims = 2:50, reduction.name = "umap.atac", reduction.key = "atacUMAP_")
+	######
+	###########
+	png_file = paste(output_tags,'_cluster_ATAC.png',sep='')
+	library(ggplot2)
+	png(png_file,height=4000,width=6000,res=72*12)
+	print(DimPlot(x, reduction = "umap.atac", group.by = "seurat_clusters", label = TRUE, label.size = 2.5, repel = TRUE) + ggtitle("ATAC_umap"))
+	dev.off()
+	######
+	######
+	clean_file = paste(output_tags,'Seurat_RNA_clean_SSS_cl',sep='_')
+    setwd(output_folder)
+    ######
+	saveRDS(x,file=clean_file)
+}
+
+
+
+#########
+######### WNN graph for scRNAseq and scATACseq 
+#########
+
+Muti_process_S8 <- function(output_folder,output_tags){
+	library(Seurat)
+	#######
+	setwd(output_folder)
+	clean_file = paste(output_tags,'Seurat_RNA_clean_SSS_cl',sep='_')
+	print(clean_file)
+	#######
+	x = readRDS(clean_file)
+	##### WNN graph ########
+	######
+	x <- FindMultiModalNeighbors(x, reduction.list = list("pca", "svd"), dims.list = list(1:50, 2:50))
+	x <- RunUMAP(x, nn.name = "weighted.nn", reduction.name = "wnn.umap", reduction.key = "wnnUMAP_",dims = 1:35)
+	x <- FindClusters(x, graph.name = "wsnn", algorithm = 3, verbose = FALSE, resolution=0.3)
+	######
+	png_file = paste(output_tags,'_cluster_WNN.png',sep='')
+	library(ggplot2)
+	png(png_file,height=4000,width=6000,res=72*12)
+	print(DimPlot(x, reduction = "wnn.umap", group.by = "seurat_clusters", label = TRUE, label.size = 2.5, repel = TRUE) + ggtitle("WNN_umap"))
+	dev.off()
+	######
+	######
+	clean_file = paste(output_tags,'Seurat_RNA_merge',sep='_')
+    setwd(output_folder)
+	saveRDS(x,file=clean_file)
+	######
+	print('done!!!')
+}
+
+
+
+
+
+
+
