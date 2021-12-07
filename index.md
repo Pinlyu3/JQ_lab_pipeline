@@ -224,18 +224,22 @@ Muti_process_S8(output_folder,output_tags)
 
 ```
 
+annotation of the cells by Seurat CCA method
+
+```r
+devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
+output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
+output_tags = '54hr_LD_202112'
+Muti_process_S8(output_folder,output_tags)
+
+```
 
 
-
-
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Pinlyu3/JQ_lab_pipeline/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### The Part of RNA velocity analysis will coming soon !!!
 
 ### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Having trouble running the code? please [report an issue on Github](https://github.com/Pinlyu3/JQ_lab_pipeline/issues) with the Bug Report form. Another way is [send me an e-mail](plyu3@jh.edu), I will help you sort it out if I have time.
 
-### The code works well? cheers
+### The code works well? cheers!
 <img src="https://i.imgur.com/ZUeCbT5.gif" width=300>
