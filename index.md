@@ -228,6 +228,10 @@ annotation of the cells by Seurat CCA method
 seurat_query is a SeuratObj 
 which has been annotated in the "celltypes" in meta.data 
 
+!!! important !!!
+the format of rownames of the query data should be same with our own data:
+ID+genesymbol: ENSDARG00000061697~~ca14
+
 ```r
 devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
 output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
@@ -236,9 +240,6 @@ seurat_query = readRDS('/zp1/data/plyu3/NAR_paper_database/test_Zebrafish/Fish_a
 
 Muti_process_S9(output_folder,output_tags,seurat_query)
 ```
-
-
-
 
 ### The Part of RNA velocity analysis will coming soon !!!
 
