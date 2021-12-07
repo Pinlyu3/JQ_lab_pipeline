@@ -239,7 +239,11 @@ Muti_process_S8(output_folder,output_tags)
 
 ### Support or Contact
 
-Having trouble running the code? please [report an issue on Github](https://github.com/Pinlyu3/JQ_lab_pipeline/issues) with the Bug Report form. Another way is [send me an e-mail](plyu3@jh.edu), I will help you sort it out if I have time.
+The pipeline is just in beta, If you have any advice, don't hesitate to [report it on Github](https://github.com/Pinlyu3/JQ_lab_pipeline/issues)
+
+If you have trouble running the code, please [report an issue on Github](https://github.com/Pinlyu3/JQ_lab_pipeline/issues) with the Bug Report form. Another way is [send me an e-mail](plyu3@jh.edu), I will help you sort it out if I have time.
+
+I hope these pipelines can save our time and have time to think more about biology questions. 
 
 ### The code works well? cheers!
 <img src="https://i.imgur.com/ZUeCbT5.gif" width=300>
