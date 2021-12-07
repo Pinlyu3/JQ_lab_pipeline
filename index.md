@@ -195,14 +195,37 @@ Muti_process_S5(output_folder,output_tags)
 ```
 
 dimension reduction of scRNA-seq matrix
+
 ```r
 devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
 output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
 output_tags = '54hr_LD_202112'
 Muti_process_S6(output_folder,output_tags)
+```
 
+adding tile matrix to the seurat object
+
+```r
+devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
+output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
+output_tags = '54hr_LD_202112'
+Muti_process_S7(output_folder,output_tags)
 
 ```
+
+
+see the WNN map combining scRNAseq and scATACseq datasets
+
+```r
+devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
+output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
+output_tags = '54hr_LD_202112'
+Muti_process_S8(output_folder,output_tags)
+
+```
+
+
+
 
 
 
