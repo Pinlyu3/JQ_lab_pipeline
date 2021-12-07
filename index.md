@@ -246,7 +246,7 @@ Muti_process_S9(output_folder,output_tags,seurat_query)
 
 ### Support or Contact
 
-The pipeline is just in beta, If you have any advice, don't hesitate to [report it on Github](https://github.com/Pinlyu3/JQ_lab_pipeline/issues)
+The pipeline is just in beta, If you have any advice, don't hesitate to [report it on Github].(https://github.com/Pinlyu3/JQ_lab_pipeline/issues)
 
 If you have trouble running the code, please [report an issue on Github](https://github.com/Pinlyu3/JQ_lab_pipeline/issues) with the Bug Report form. Another way is send me an e-mail plyu3 at jh.edu, I will help you sort it out if I have time.
 
