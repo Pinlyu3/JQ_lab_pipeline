@@ -182,7 +182,7 @@ Muti_process_ATAC_S2(TSS_enrich_low,output_folder,output_tags,output_folder2,gen
 ```
 
 
-## Last integrate the scRNAseq and scATACseq files 
+## Integrate the scRNAseq(cell-by-gene) and scATACseq(cell-by-500bp_bin) files 
 
 copy the doublet file and tileMat file to the scRNAseq folder:
 output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
@@ -225,8 +225,7 @@ Muti_process_S8(output_folder,output_tags)
 ```
 
 annotation of the cells by Seurat CCA method
-
-seurat_query is a seurat obj 
+seurat_query is a SeuratObj 
 which has been annotated in the "celltypes" in meta.data 
 
 ```r
@@ -243,9 +242,9 @@ Muti_process_S9(output_folder,output_tags,seurat_query)
 
 ### The Part of RNA velocity analysis will coming soon !!!
 
+### The Part of judging doublets will coming soon !!!
 
 ### Support or Contact
-
 
 The pipeline is just in beta, If you have any advice, don't hesitate to [report it on Github](https://github.com/Pinlyu3/JQ_lab_pipeline/issues)
 
