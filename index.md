@@ -226,18 +226,26 @@ Muti_process_S8(output_folder,output_tags)
 
 annotation of the cells by Seurat CCA method
 
+seurat_query is a seurat obj 
+which has been annotated in the "celltypes" in meta.data 
+
 ```r
 devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
 output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
 output_tags = '54hr_LD_202112'
+seurat_query = readRDS('/zp1/data/plyu3/NAR_paper_database/test_Zebrafish/Fish_adult_Seurat')
 
-Muti_process_S9(output_folder,output_tags)
-
+Muti_process_S9(output_folder,output_tags,seurat_query)
 ```
+
+
+
 
 ### The Part of RNA velocity analysis will coming soon !!!
 
+
 ### Support or Contact
+
 
 The pipeline is just in beta, If you have any advice, don't hesitate to [report it on Github](https://github.com/Pinlyu3/JQ_lab_pipeline/issues)
 
