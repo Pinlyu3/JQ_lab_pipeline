@@ -241,7 +241,51 @@ seurat_query = readRDS('/zp1/data/plyu3/NAR_paper_database/test_Zebrafish/Fish_a
 Muti_process_S9(output_folder,output_tags,seurat_query)
 ```
 
-### The Part of RNA velocity analysis will coming soon !!!
+### Next prepare the RNA velocity for the muti-omics datas ######
+
+make sure have installed velocyto tools, run in shell to check it:
+velocyto --help
+
+```r
+mkdir /zp1/data/plyu3/Muti_omic/54hr_LD/velocity
+```
+
+The scRNAseq bam file in the cellranger-arc output folder is:
+gex_possorted_bam.bam
+
+```r
+cp  /zp1/data/Share/Fish/Multiome/54hrLD/outs/gex_possorted_bam.bam /zp1/data/plyu3/Muti_omic/54hr_LD/velocity/gex_possorted_bam.bam
+
+cp /zp1/data/Share/Fish/Multiome/54hrLD/outs/gex_possorted_bam.bai /zp1/data/plyu3/Muti_omic/54hr_LD/velocity/gex_possorted_bam
+```
+
+
+downloaded rmsk file from UCSC Genome brower 
+/zp1/data/plyu3/Muti_omic/GRCz11_rmsk.gtf
+
+barcodes:
+/zp1/data/Share/Fish/Multiome/54hrLD/outs/filtered_feature_bc_matrix/barcodes.tsv.gz
+
+```r
+cp /zp1/data/Share/Fish/Multiome/54hrLD/outs/filtered_feature_bc_matrix/barcodes.tsv.gz /zp1/data/plyu3/Muti_omic/54hr_LD/velocity/barcodes.tsv.gz
+
+cd /zp1/data/plyu3/Muti_omic/54hr_LD/velocity/
+
+gunzip barcodes.tsv.gz
+
+```
+
+```r
+#### in the shell: #######
+cd /zp1/data/plyu3/Muti_omic/54hr_LD/velocity/
+
+nohup velocyto run -b barcodes.tsv -m /zp1/data/plyu3/Muti_omic/GRCz11_rmsk.gtf gex_possorted_bam.bam /zp1/data/Share/Fish/Multiome/Fish_genome/Danio_rerio.GRCz11.104.gtf &
+```
+
+Next run python package: scvelo
+
+
+
 
 ### The Part of judging doublets will coming soon !!!
 
