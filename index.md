@@ -2,6 +2,7 @@
 
 1. Pipelines for [Chromium Single Cell Multiome ATAC + Gene Expression](#multiome-cellranger)
 
+2. Pipelines for [10X single cell RNA-seq](#Single-cell-RNA-seq-10X)
 
 # Multiome cellranger
 
@@ -323,6 +324,15 @@ python Muti_velocity.py --output_folder='/zp1/data/plyu3/Muti_omic/54hr_LD' --ou
 
 
 ### The Part of judging doublets will coming soon !!!
+
+
+
+# Single-cell RNA-seq 10X
+### The Part will coming soon !!!
+
+
+
+
 
 ### Support or Contact
 
