@@ -284,14 +284,48 @@ cd /zp1/data/plyu3/Muti_omic/54hr_LD/velocity/
 nohup velocyto run -b barcodes.tsv -m /zp1/data/plyu3/Muti_omic/GRCz11_rmsk.gtf gex_possorted_bam.bam /zp1/data/Share/Fish/Multiome/Fish_genome/Danio_rerio.GRCz11.104.gtf &
 ```
 
+
+First output the metadata from seurat，need to include UMAP or TSNE and cellnames
+```r
+#####
+
+devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
+
+Seurat_rds_file = '/zp1/data/plyu3/Muti_omic/54hr_LD/54hr_LD_202112_Seurat_RNA_merge'
+output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
+output_tags = '54hr_LD_202112'
+dim_name = 'wnn.umap'
+##### 
+
+Output_Seurat_metadata(Seurat_rds_file,dim_name,output_folder,output_tags)
+
+```
+
 Next run python package: scvelo
 
+metadata = '54hr_LD_202112_embedding_tab.txt'
+
+loomfile = '/zp1/data/plyu3/Muti_omic/54hr_LD/velocity/velocyto/gex_possorted_bam_R5DWU.loom'
+
+```r
+##### in the shell: #####
+#### download the python code and run ######
+cd /zp1/data/plyu3/Muti_omic
+curl https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.py > Muti_process.py
+#### run Scrublet #####
+python Muti_process.py --output_folder='/zp1/data/plyu3/Muti_omic/54hr_LD' --output_tags='54hr_LD_202112'
 
 
 
 ### The Part of judging doublets will coming soon !!!
 
 ### Support or Contact
+
+
+
+```
+
+
 
 The pipeline is just in beta, If you have any advice, don't hesitate to [report it on Github].(https://github.com/Pinlyu3/JQ_lab_pipeline/issues)
 
