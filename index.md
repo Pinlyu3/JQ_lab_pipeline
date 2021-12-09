@@ -272,7 +272,6 @@ cp /zp1/data/Share/Fish/Multiome/54hrLD/outs/filtered_feature_bc_matrix/barcodes
 cd /zp1/data/plyu3/Muti_omic/54hr_LD/velocity/
 
 gunzip barcodes.tsv.gz
-
 ```
 
 
@@ -288,7 +287,6 @@ nohup velocyto run -b barcodes.tsv -m /zp1/data/plyu3/Muti_omic/GRCz11_rmsk.gtf 
 First output the metadata from seurat，need to include UMAP or TSNE and cellnames
 ```r
 #####
-
 devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
 
 Seurat_rds_file = '/zp1/data/plyu3/Muti_omic/54hr_LD/54hr_LD_202112_Seurat_RNA_merge'
@@ -296,18 +294,18 @@ output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
 output_tags = '54hr_LD_202112'
 dim_name = 'wnn.umap'
 ##### 
-
 Output_Seurat_metadata(Seurat_rds_file,dim_name,output_folder,output_tags)
-
 ```
 
 Next run python package: scvelo
 
 metadata = '54hr_LD_202112_embedding_tab.txt'
-loomfile = '/zp1/data/plyu3/Muti_omic/54hr_LD/velocity/velocyto/gex_possorted_bam_R5DWU.loom'
-output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
-output_tags = '54hr_LD_202112'
 
+loomfile = '/zp1/data/plyu3/Muti_omic/54hr_LD/velocity/velocyto/gex_possorted_bam_R5DWU.loom'
+
+output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
+
+output_tags = '54hr_LD_202112'
 ```r
 ##### conda activate velocyto3 #######
 
@@ -315,13 +313,10 @@ output_tags = '54hr_LD_202112'
 #### download the velocity python code and run ######
 cd /zp1/data/plyu3/Muti_omic
 curl https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_velocity.py > Muti_velocity.py
-
 #### run velocity #####
 #### using 1000 variable features #####
 #### will take > 20 mins ######
-
 python Muti_velocity.py --output_folder='/zp1/data/plyu3/Muti_omic/54hr_LD' --output_tags='54hr_LD_202112' --loomfile='/zp1/data/plyu3/Muti_omic/54hr_LD/velocity/velocyto/gex_possorted_bam_R5DWU.loom' --metadata='54hr_LD_202112_embedding_tab.txt'
-
 #### see the velocity plot in the output_folder + figures ######
 #### done !!!! #####
 ```
