@@ -114,6 +114,8 @@ scv.tl.velocity_graph(data_cl)
 
 output_file = output_tags + '_velocity.png'
 
+print('output_file')
+
 scv.pl.velocity_embedding_grid(data_cl,basis='umap',color="lightgrey",arrow_length=1, arrow_color='#CB2314',arrow_size=2,density=1,alpha=1,size=2.5,dpi=600,save=output_file)
 
 ####################
