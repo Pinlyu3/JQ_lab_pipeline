@@ -275,6 +275,8 @@ gunzip barcodes.tsv.gz
 
 ```
 
+
+run velocyto to covert bam file to loom files
 ```r
 #### in the shell: #######
 cd /zp1/data/plyu3/Muti_omic/54hr_LD/velocity/
