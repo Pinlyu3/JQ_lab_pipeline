@@ -304,17 +304,27 @@ Output_Seurat_metadata(Seurat_rds_file,dim_name,output_folder,output_tags)
 Next run python package: scvelo
 
 metadata = '54hr_LD_202112_embedding_tab.txt'
-
 loomfile = '/zp1/data/plyu3/Muti_omic/54hr_LD/velocity/velocyto/gex_possorted_bam_R5DWU.loom'
+output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
+output_tags = '54hr_LD_202112'
 
 ```r
-##### in the shell: #####
-#### download the python code and run ######
-cd /zp1/data/plyu3/Muti_omic
-curl https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.py > Muti_process.py
-#### run Scrublet #####
-python Muti_process.py --output_folder='/zp1/data/plyu3/Muti_omic/54hr_LD' --output_tags='54hr_LD_202112'
+##### conda activate velocyto3 #######
 
+##### in the shell: #####
+#### download the velocity python code and run ######
+cd /zp1/data/plyu3/Muti_omic
+curl https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_velocity.py > Muti_velocity.py
+
+#### run velocity #####
+#### using 1000 variable features #####
+#### will take > 20 mins ######
+
+python Muti_velocity.py --output_folder='/zp1/data/plyu3/Muti_omic/54hr_LD' --output_tags='54hr_LD_202112' --loomfile='/zp1/data/plyu3/Muti_omic/54hr_LD/velocity/velocyto/gex_possorted_bam_R5DWU.loom' --metadata='54hr_LD_202112_embedding_tab.txt'
+
+#### see the velocity plot in the output_folder + figures ######
+#### done !!!! #####
+```
 
 
 ### The Part of judging doublets will coming soon !!!
