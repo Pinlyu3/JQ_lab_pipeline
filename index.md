@@ -225,7 +225,7 @@ Muti_process_S8(output_folder,output_tags)
 
 ```
 
-annotation of the cells by Seurat CCA method
+## annotation of the cells by Seurat CCA method
 seurat_query is a SeuratObj 
 which has been annotated in the "celltypes" in meta.data 
 
@@ -237,11 +237,33 @@ ID+genesymbol: ENSDARG00000061697~~ca14
 devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
 output_folder = '/zp1/data/plyu3/Muti_omic/54hr_LD'
 output_tags = '54hr_LD_202112'
-seurat_query = readRDS('/zp1/data/plyu3/NAR_paper_database/test_Zebrafish/Fish_adult_Seurat')
+seurat_query = readRDS('/zp1/data/plyu3/NAR_paper_database/test_Zebrafish/Zebrafish_LD_seurat')
 
 Muti_process_S9(output_folder,output_tags,seurat_query)
 ```
 
+## annotation of the cells by cell marker list
+
+!!! important !!!
+the format of rownames of the markers should be same with your own data:
+ID+genesymbol: ENSDARG00000061697~~ca14
+
+Or you can change the gene name in our seurat Obj
+
+```r
+
+
+
+
+
+```
+
+
+## re-annotated the celltype for each cluster with predicted single-cell labels ######
+```r
+
+
+```
 ### Next prepare the RNA velocity for the muti-omics datas ######
 
 make sure have installed velocyto tools, run in shell to check it:
