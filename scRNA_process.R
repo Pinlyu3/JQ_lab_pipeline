@@ -33,8 +33,9 @@ Convert_to_seurat <- function(Mat,cell_id,gene_features){
 	########
 	library(Seurat)
 	########
-	Seurat_obj = 
-
+	Seurat_obj = CreateSeuratObject(Mat)
+	######## return Seurat_obj ######## 
+	return(Seurat_obj)
 }
 
 
