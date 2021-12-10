@@ -4,7 +4,9 @@
 
 2. Pipelines for [10X single cell RNA-seq](#single-cell-rna-seq-10x).
 
-3. Example codes for plotting regular figures.
+3. Pipelines for [10X single cell ATAC-seq](#single-cell-atac-seq-10x).
+
+4. Example codes for plotting regular figures.
 
 # Multiome cellranger
 
