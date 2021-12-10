@@ -24,3 +24,22 @@ Process_gene_features <- function(gene_features){
 	out = paste(ID,symbol,sep='~~')
 	return(out)
 }
+
+
+Convert_to_seurat <- function(Mat,cell_id,gene_features){
+	########
+	rownames(Mat) = gene_features
+	colnames(Mat) = cell_id
+	########
+	library(Seurat)
+	########
+	Seurat_obj = 
+
+}
+
+
+
+
+
+
+
