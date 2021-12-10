@@ -333,26 +333,19 @@ python Muti_velocity.py --output_folder='/zp1/data/plyu3/Muti_omic/54hr_LD' --ou
 #### conda activate Signac2 #####
 #### col1 of gene_features is ID and col2 of gene_features is gene symbol ######
 gene_features = read.table('/zp1/data/plyu3/NAR_paper_database/test_Zebrafish/Zebrafish_gene_features.tsv',sep='\t')
-
 cell_features = read.table('/zp1/data/plyu3/NAR_paper_database/test_Zebrafish/Zebrafish_NMDA_cell_features.tsv',sep='\t')
-
 cell_id = cell_features$V1
 ####
 devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/scRNA_process.R")
 gene_features = Process_gene_features(gene_features)
-
 ####
 Mat = Matrix::readMM('/zp1/data/plyu3/NAR_paper_database/test_Zebrafish/Zebrafish_NMDA_count_matrix.mtx')
-
 Zebrafish_NMDA_seurat = Convert_to_seurat(Mat,cell_id,gene_features)
-
 #### celltypes #####
 Zebrafish_NMDA_seurat$celltypes = cell_features$V3
 ####
-
 setwd('/zp1/data/plyu3/NAR_paper_database/test_Zebrafish')
 saveRDS(Zebrafish_NMDA_seurat,file='Zebrafish_NMDA_seurat')
-
 ```
 
 ### Support or Contact
