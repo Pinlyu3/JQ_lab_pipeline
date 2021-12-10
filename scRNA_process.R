@@ -27,6 +27,7 @@ Process_gene_features <- function(gene_features){
 
 
 Convert_to_seurat <- function(Mat,cell_id,gene_features){
+	library(Matrix)
 	########
 	rownames(Mat) = gene_features
 	colnames(Mat) = cell_id
