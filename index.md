@@ -264,7 +264,7 @@ Or you can change the gene name in our seurat Obj
 
 
 ```
-### Next prepare the RNA velocity for the muti-omics datas ######
+## Next prepare the RNA velocity for the muti-omics datas ######
 
 make sure have installed velocyto tools, run in shell to check it:
 velocyto --help
