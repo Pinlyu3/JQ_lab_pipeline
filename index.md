@@ -1,8 +1,10 @@
 # Pipelines
 
-1. Pipelines for [Chromium Single Cell Multiome ATAC + Gene Expression](#multiome-cellranger)
+1. Pipelines for [Chromium Single Cell Multiome ATAC + Gene Expression](#multiome-cellranger).
 
-2. Pipelines for [10X single cell RNA-seq](#single-cell-rna-seq-10x)
+2. Pipelines for [10X single cell RNA-seq](#single-cell-rna-seq-10x).
+
+3. Example codes for plotting regular figures.
 
 # Multiome cellranger
 
