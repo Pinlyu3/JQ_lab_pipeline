@@ -171,3 +171,70 @@ SCRNA_process_S3 <- function(output_folder,output_tags,seurat_query){
 	########
 	print('Done!!!!')
 }
+
+
+
+
+
+
+
+
+SCRNA_process_S4 <- function(output_folder,output_tags){
+	clean_file = paste(output_tags,'Seurat_RNA_merge_addCT',sep='_')
+	setwd(output_folder)
+	x = readRDS(file=clean_file)	
+	DefaultAssay(x) = 'SCT'
+	library(future)
+	plan("multicore", workers = 1)
+	options(future.globals.maxSize = 10000 * 1024^2)
+	x <- FindClusters(x,algorithm = 3,verbose = FALSE,resolution=5)
+	#### re-cluster with high resolution ##########
+	clusters = table(x$seurat_clusters)
+	print(paste('trouble shooting:','Num of clusters:',length(clusters),sep=' '))
+	meta_data = data.frame(x@meta.data)
+	meta_data_cl = meta_data[which(meta_data$prediction.score.max > 0.5),]
+	#### prediction.score.max > 0.5 ######
+	clusters = table(meta_data_cl$seurat_clusters)
+	x$celltypes_sm = 'Unknown'
+	for (i in names(clusters)){
+		meta_data_cl_sub = meta_data_cl[which(meta_data_cl$seurat_clusters == i),]
+		subres = table(meta_data_cl_sub$predicted.id) / length(meta_data_cl_sub$predicted.id)
+		sub_cluster = subres[which(subres==max(subres))]
+		sub_celltype = names(sub_cluster)
+		sub_ratio = round(as.numeric(sub_cluster),3)
+		message = paste('cluster:',i,'celltype predict:',sub_celltype,'ratio',sub_ratio,sep=' ')
+		print(message)
+	###### if ########
+		if (sub_ratio > 0.5){
+			index = which(x$seurat_clusters == i)
+			x$celltypes_sm[index] = sub_celltype
+		}
+	}
+	#### plot the results: ################
+	png_file = paste(output_tags,'_cluster_before.png',sep='')
+	library(ggplot2)
+	png(png_file,height=4000,width=6000,res=72*12)
+	print(DimPlot(x, reduction = "umap.rna", group.by = "seurat_clusters", label = TRUE, label.size = 2.5, repel = TRUE) + ggtitle("umap.rna"))
+	dev.off()
+	#### plot the results: ################
+	png_file = paste(output_tags,'_sm_before.png',sep='')
+	library(ggplot2)
+	png(png_file,height=4000,width=6000,res=72*12)
+	print(DimPlot(x, reduction = "umap.rna", group.by = "predicted.id", label = TRUE, label.size = 2.5, repel = TRUE) + ggtitle("umap.rna"))
+	dev.off()
+	#### plot the results: ################
+	png_file = paste(output_tags,'_sm_after.png',sep='')
+	library(ggplot2)
+	png(png_file,height=4000,width=6000,res=72*12)
+	print(DimPlot(x, reduction = "umap.rna", group.by = "celltypes_sm", label = TRUE, label.size = 2.5, repel = TRUE) + ggtitle("umap.rna"))
+	dev.off()
+	#### save the results ####
+	clean_file = paste(output_tags,'Seurat_RNA_merge_CTsm',sep='_')
+    setwd(output_folder)
+	saveRDS(x,file=clean_file)
+}
+
+
+
+
+
