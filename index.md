@@ -418,6 +418,9 @@ nohup velocyto run10x -m /zp1/data/plyu3/Muti_omic/GRCz11_rmsk.gtf /zp1/data/ply
 seurat_query = readRDS('/zp1/data/plyu3/NAR_paper_database/test_Zebrafish/Zebrafish_LD_seurat')
 
 SCRNA_process_S3(output_folder,output_tags,seurat_query)
+
+SCRNA_process_S4(output_folder,output_tags)
+
 ```
 
 
