@@ -374,6 +374,53 @@ setwd('/zp1/data/plyu3/NAR_paper_database/test_Zebrafish')
 saveRDS(Zebrafish_NMDA_seurat,file='Zebrafish_NMDA_seurat')
 ```
 
+```r
+devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/scRNA_process.R")
+devtools::source_url("https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.R")
+
+### cd /zp1/data/plyu3/fish_scRNAseq_only/LD
+
+setwd('/zp1/data/plyu3/fish_scRNAseq_only/LD/4hrLD/')
+matrix_folder = '/zp1/data/plyu3/fish_scRNAseq_only/LD/4hrLD/outs/filtered_feature_bc_matrix'
+output_folder = '/zp1/data/plyu3/fish_scRNAseq_only/LD/4hrLD_out'
+output_tags = '4hrLD_202112'
+MT_tags = '~~mt-'
+
+### 
+SCRNA_process_S1(matrix_folder,output_folder,output_tags,MT_tags)
+
+nFeature_RNA = c(200,1500)
+nCount_RNA = c(0,5000)
+mt_RNA = c(0,15)
+
+Muti_process_S2(output_folder,output_tags,nFeature_RNA = nFeature_RNA,nCount_RNA = nCount_RNA,mt_RNA = mt_RNA)
+Muti_process_S3(output_folder,output_tags)
+
+cd /zp1/data/plyu3/fish_scRNAseq_only
+curl https://raw.githubusercontent.com/Pinlyu3/JQ_lab_pipeline/main/Muti_process.py > Muti_process.py
+
+python /zp1/data/plyu3/fish_scRNAseq_only/Muti_process.py --output_folder='/zp1/data/plyu3/fish_scRNAseq_only/LD/4hrLD_out' --output_tags='4hrLD_202112'
+
+Muti_process_S4(output_folder,output_tags)
+SCRNA_process_S2(output_folder,output_tags)
+
+### 
+######
+###
+conda activate velocyto
+cd /zp1/data/plyu3/fish_scRNAseq_only/LD/4hrLD
+nohup velocyto run10x -m /zp1/data/plyu3/Muti_omic/GRCz11_rmsk.gtf /zp1/data/plyu3/fish_scRNAseq_only/LD/4hrLD /zp1/data/Share/Fish/Multiome/Fish_genome/Danio_rerio.GRCz11.104.gtf &
+
+###
+###### align the cell types #######
+### 
+
+seurat_query = readRDS('/zp1/data/plyu3/NAR_paper_database/test_Zebrafish/Zebrafish_LD_seurat')
+
+SCRNA_process_S3(output_folder,output_tags,seurat_query)
+```
+
+
 ### Support or Contact
 
 The pipeline is just in beta, If you have any advice, don't hesitate to [report it on Github](https://github.com/Pinlyu3/JQ_lab_pipeline/issues).
