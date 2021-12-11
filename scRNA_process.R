@@ -80,9 +80,44 @@ SCRNA_process_S1 <- function(matrix_folder,output_folder,output_tags,MT_tags){
 
 
 
-
-
-
+SCRNA_process_S2 <- function(output_folder,output_tags){
+	library(Seurat)
+	#######
+	setwd(output_folder)
+	clean_file = paste(output_tags,'Seurat_RNA_clean_S',sep='_')
+	print(clean_file)
+	#######
+	x = readRDS(clean_file)
+	######
+	library(future)
+	plan("multiprocess", workers = 30)
+	options(future.globals.maxSize = 10000 * 1024^2)
+	######
+	library(dplyr)
+	x <- SCTransform(x, verbose = FALSE) %>% RunPCA() %>% RunUMAP(dims = 1:50, reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
+	x <- FindNeighbors(x, dims = 1:50)
+	###### names(x@graphs) #####
+	x <- FindClusters(x,algorithm = 3,verbose = FALSE)
+	######
+	######
+	setwd(output_folder)
+	png_file = paste(output_tags,'_cluster.png',sep='')
+	library(ggplot2)
+	png(png_file,height=4000,width=6000,res=72*12)
+	print(DimPlot(x, reduction = "umap.rna", group.by = "seurat_clusters", label = TRUE, label.size = 2.5, repel = TRUE) + ggtitle("RNA_umap"))
+	dev.off()
+	#######
+	setwd(output_folder)
+	png_file = paste(output_tags,'_scrublet.png',sep='')
+	png(png_file,height=4000,width=6000,res=72*12)
+	print(FeaturePlot(x, reduction = "umap.rna", features=c('scrublet'), label.size = 2.5, repel = TRUE) + ggtitle("RNA_doublet"))
+	dev.off()
+	#######
+	clean_file = paste(output_tags,'Seurat_RNA_clean_SSS',sep='_')
+    setwd(output_folder)
+	saveRDS(x,file=clean_file)
+    print('Done!')
+}
 
 
 
