@@ -458,9 +458,7 @@ Muti_process_S9 <- function(output_folder,output_tags,seurat_query){
     setwd(output_folder)
 	x = readRDS(file=clean_file)
 	########
-	########
 	DefaultAssay(x) = 'RNA'
-	########
 	######## Run CCA piplines #######
 	########
 	library(future)
@@ -474,6 +472,13 @@ Muti_process_S9 <- function(output_folder,output_tags,seurat_query){
 	x <- ScaleData(x)
 	x <- RunPCA(x)
 	######
+	DefaultAssay(seurat_query) = 'RNA'
+	seurat_query <- NormalizeData(seurat_query, verbose = TRUE)
+	seurat_query <- FindVariableFeatures(seurat_query, selection.method = "vst", nfeatures = 2000,
+        verbose = FALSE)
+	seurat_query <- ScaleData(seurat_query)
+	seurat_query <- RunPCA(seurat_query)
+	######
 	Xanchors <- FindTransferAnchors(reference = seurat_query, query = x,dims = 1:30, reference.reduction = "pca")
 	########
 	predictions <- TransferData(anchorset = Xanchors, refdata = seurat_query$celltypes,dims = 1:30)
@@ -486,7 +491,7 @@ Muti_process_S9 <- function(output_folder,output_tags,seurat_query){
 	png_file = paste(output_tags,'_celltypes_WNN.png',sep='')
 	library(ggplot2)
 	png(png_file,height=4000,width=6000,res=72*12)
-	print(DimPlot(x, reduction = "wnn.tsne", group.by = "predicted.id", label = TRUE, label.size = 2.5, repel = TRUE) + ggtitle("WNN_umap"))
+	print(DimPlot(x, reduction = "wnn.umap", group.by = "predicted.id", label = TRUE, label.size = 2.5, repel = TRUE) + ggtitle("WNN_umap"))
 	dev.off()
 	########
 	clean_file = paste(output_tags,'Seurat_RNA_merge_addCT',sep='_')
