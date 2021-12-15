@@ -238,3 +238,18 @@ SCRNA_process_S4 <- function(output_folder,output_tags){
 
 
 
+SCRNA_process_S5 <- function(output_folder,output_tags){
+	clean_file = paste(output_tags,'Seurat_RNA_merge_addCT',sep='_')
+	setwd(output_folder)
+	x = readRDS(file=clean_file)	
+	library(Seurat)
+	######## percent.mt scrublet ######
+	png_file = paste(output_tags,'_sm_features.png',sep='')
+	library(ggplot2)
+	png(png_file,height=8000,width=10000,res=72*12)
+	print(FeaturePlot(x, reduction = "umap.rna", features = c('percent.mt','scrublet','nCount_RNA','nFeature_RNA'), label = TRUE, label.size = 2.5, repel = TRUE) + ggtitle("umap.rna"))
+	dev.off()
+	######## ################### ######
+}
+
+
