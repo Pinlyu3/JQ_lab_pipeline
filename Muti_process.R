@@ -300,7 +300,7 @@ Muti_process_S6 <- function(output_folder,output_tags){
 	options(future.globals.maxSize = 10000 * 1024^2)
 	######
 	library(dplyr)
-	x <- SCTransform(x, verbose = FALSE) %>% RunPCA() %>% RunUMAP(dims = 1:50, reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
+	x <- SCTransform(x, verbose = FALSE,vars.to.regress = "percent.mt") %>% RunPCA() %>% RunUMAP(dims = 1:50, reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
 	x <- FindNeighbors(x, dims = 1:50)
 	###### names(x@graphs) #####
 	x <- FindClusters(x,algorithm = 3,verbose = FALSE)
