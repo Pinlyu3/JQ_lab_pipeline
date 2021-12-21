@@ -4,7 +4,7 @@
 #### output_tags: sample name #####
 #### MT_tags: genes which are located in Mitochondria #####
 
-Muti_process_S1 <- function(matrix_folder,output_folder,output_tags,MT_tags){
+Muti_process_S1 <- function(matrix_folder,output_folder,output_tags,MT_tags,useProtein_coding=T){
 	library(Seurat)
 	library(Matrix)
 	#####
@@ -22,6 +22,15 @@ Muti_process_S1 <- function(matrix_folder,output_folder,output_tags,MT_tags){
 	k = which(features$V3 == 'Gene Expression')
 	#####
 	mat_cl = mat[k,]
+	#####
+	if(useProtein_coding == T){
+		print('Zebrafish')
+		load('/zp1/data/plyu3/NAR_paper_database/test_Zebrafish/protein_coding_genes')
+		k = which(rownames(mat_cl) %in% protein_coding_genes == T)
+		print(dim(mat_cl))
+		mat_cl = mat_cl[k,]
+		print(dim(mat_cl))
+	}
 	##### load into Seurat ####
 	RNA_Seurat <- CreateSeuratObject(counts = mat_cl,min.cells=0,min.features=0)
 	RNA_Seurat[["percent.mt"]] <- PercentageFeatureSet(RNA_Seurat, pattern = MT_tags)
