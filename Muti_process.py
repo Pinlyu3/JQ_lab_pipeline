@@ -24,7 +24,7 @@ print(folder)
 print(index)
 
 
-def scrublet_process(folder,index,doublet_rate=0.1):
+def scrublet_process(folder,index,doublet_rate=0.2):
     os.chdir(folder)
     counts_matrix = scipy.io.mmread(index + '_scrublet_mat.mtx').T.tocsc()
     genes = np.array(scr.load_genes(index + '_scrublet_gene.tsv', delimiter='\t', column=1))
@@ -47,6 +47,6 @@ def scrublet_process(folder,index,doublet_rate=0.1):
     Output_FN = index + '_scrublet_res.tsv'
     barcodes_pd.to_csv(Output_FN,sep='\t',index=0,header=0)
 
-scrublet_process(folder,index,doublet_rate=0.1)
+scrublet_process(folder,index,doublet_rate=0.2)
 ######
 ######
