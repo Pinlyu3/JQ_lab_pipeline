@@ -43,7 +43,7 @@ Convert_to_seurat <- function(Mat,cell_id,gene_features){
 ############
 
 
-SCRNA_process_S1 <- function(matrix_folder,output_folder,output_tags,MT_tags){
+SCRNA_process_S1 <- function(matrix_folder,output_folder,output_tags,MT_tags,useProtein_coding=T){
 	library(Seurat)
 	library(Matrix)
 	#####
@@ -61,6 +61,14 @@ SCRNA_process_S1 <- function(matrix_folder,output_folder,output_tags,MT_tags){
 	##### k = which(features$V3 == 'Gene Expression')
 	#####
 	mat_cl = mat
+	if(useProtein_coding == T){
+		print('Zebrafish')
+		load('/zp1/data/plyu3/NAR_paper_database/test_Zebrafish/protein_coding_genes')
+		k = which(rownames(mat_cl) %in% protein_coding_genes == T)
+		print(dim(mat_cl))
+		mat_cl = mat_cl[k,]
+		print(dim(mat_cl))
+	}
 	##### load into Seurat ####
 	RNA_Seurat <- CreateSeuratObject(counts = mat_cl,min.cells=0,min.features=0)
 	RNA_Seurat[["percent.mt"]] <- PercentageFeatureSet(RNA_Seurat, pattern = MT_tags)
