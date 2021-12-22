@@ -92,7 +92,7 @@ SCRNA_process_S2 <- function(output_folder,output_tags){
 	library(Seurat)
 	#######
 	setwd(output_folder)
-	clean_file = paste(output_tags,'Seurat_RNA_clean_S',sep='_')
+	clean_file = paste(output_tags,'Seurat_RNA_clean',sep='_')
 	print(clean_file)
 	#######
 	x = readRDS(clean_file)
@@ -102,7 +102,7 @@ SCRNA_process_S2 <- function(output_folder,output_tags){
 	options(future.globals.maxSize = 10000 * 1024^2)
 	######
 	library(dplyr)
-	x <- SCTransform(x, verbose = FALSE) %>% RunPCA() %>% RunUMAP(dims = 1:50, reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
+	x <- SCTransform(x, verbose = FALSE,vars.to.regress='percent.mt') %>% RunPCA() %>% RunUMAP(dims = 1:50, reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
 	x <- FindNeighbors(x, dims = 1:50)
 	###### names(x@graphs) #####
 	x <- FindClusters(x,algorithm = 3,verbose = FALSE)
@@ -113,12 +113,6 @@ SCRNA_process_S2 <- function(output_folder,output_tags){
 	library(ggplot2)
 	png(png_file,height=4000,width=6000,res=72*12)
 	print(DimPlot(x, reduction = "umap.rna", group.by = "seurat_clusters", label = TRUE, label.size = 2.5, repel = TRUE) + ggtitle("RNA_umap"))
-	dev.off()
-	#######
-	setwd(output_folder)
-	png_file = paste(output_tags,'_scrublet.png',sep='')
-	png(png_file,height=4000,width=6000,res=72*12)
-	print(FeaturePlot(x, reduction = "umap.rna", features=c('scrublet'), label.size = 2.5, repel = TRUE) + ggtitle("RNA_doublet"))
 	dev.off()
 	#######
 	clean_file = paste(output_tags,'Seurat_RNA_clean_SSS',sep='_')
@@ -200,7 +194,7 @@ SCRNA_process_S4 <- function(output_folder,output_tags){
 	clusters = table(x$seurat_clusters)
 	print(paste('trouble shooting:','Num of clusters:',length(clusters),sep=' '))
 	meta_data = data.frame(x@meta.data)
-	meta_data_cl = meta_data[which(meta_data$prediction.score.max > 0.5),]
+	meta_data_cl = meta_data[which(meta_data$prediction.score.max > 0.75),]
 	#### prediction.score.max > 0.5 ######
 	clusters = table(meta_data_cl$seurat_clusters)
 	x$celltypes_sm = 'Unknown'
@@ -213,7 +207,7 @@ SCRNA_process_S4 <- function(output_folder,output_tags){
 		message = paste('cluster:',i,'celltype predict:',sub_celltype,'ratio',sub_ratio,sep=' ')
 		print(message)
 	###### if ########
-		if (sub_ratio > 0.5){
+		if (sub_ratio > 0.8){
 			index = which(x$seurat_clusters == i)
 			x$celltypes_sm[index] = sub_celltype
 		}
@@ -280,6 +274,184 @@ Get_gene_names = function(input,query){
 }
 
 
+#### clean the scurblet ########
+#### cutoff ####################
+
+
+SCRNA_process_S6 <- function(output_folder,output_tags,cutoff=0.25){
+	clean_file = paste(output_tags,'Seurat_RNA_merge_CTsm',sep='_')
+    setwd(output_folder)
+	x = readRDS(file=clean_file)
+	######## ################### ######
+	########
+	x_cl = x[,which(x$scrublet < cutoff)]
+	########
+	setwd(output_folder)
+	png_file = paste(output_tags,'_scrublet_filter.png',sep='')
+	png(png_file,height=4000,width=6000,res=72*12)
+	print(FeaturePlot(x_cl, reduction = "umap.rna", features=c('scrublet'), label.size = 2.5, repel = TRUE) + ggtitle("RNA_doublet"))
+	dev.off()
+	########
+	DefaultAssay(x_cl) = 'RNA'
+	######### recluster #######
+	library(dplyr)
+	x_cl <- SCTransform(x_cl, verbose = FALSE,vars.to.regress='percent.mt') %>% RunPCA() %>% RunUMAP(dims = 1:50, reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
+	x_cl <- FindNeighbors(x_cl, dims = 1:50)
+	###### names(x@graphs) #####
+	x_cl <- FindClusters(x_cl,algorithm = 3,verbose = FALSE)
+	x_cl <- RunUMAP(x_cl,dims=1:50,reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
+	setwd(output_folder)
+	png_file = paste(output_tags,'_ct_filter.png',sep='')
+	library(ggplot2)
+	png(png_file,height=4000,width=6000,res=72*12)
+	print(DimPlot(x_cl, reduction = "umap.rna", group.by = "celltypes_sm", label = TRUE, label.size = 2.5, repel = TRUE) + ggtitle("RNA_umap"))
+	dev.off()
+	#####
+	clean_file = paste(output_tags,'Seurat_RNA_merge_CTsm_filter',sep='_')
+    setwd(output_folder)
+	saveRDS(x_cl,file=clean_file)
+	########
+	print('Done!!!!')
+
+}
+
+
+##### plot test markers !!! ####################
+AC_query = c('tfap2b','proxla','calb2a','calb2b','elavl3')
+markers = AC_query
+markers_name = 'AC'
+
+Cone_query = c('opn1mw1','opn1mw2','opn1mw3','opn1mw4','opn1sw1','opn1sw2','thrb')
+markers = Cone_query
+markers_name = 'Cone'
+
+Rod_query = c('rho','nrl','gnat1','nr2e3')
+markers = Rod_query
+markers_name = 'Rod'
+
+BC_query = c('bhlhe23','cabp5a','cabp5b')
+markers = BC_query
+markers_name = 'BC'
+
+VE_query = c('pecam1','cdh5','tie1','tek')
+markers = VE_query
+markers_name = 'VE'
+
+Oligo_query = c('olig1','olig2','mbpa','mbpb')
+markers = Oligo_query
+markers_name = 'Oligo'
+
+RGC_query = c('isl2b','pou4f1','pou4f2','pou4f3','rbpms')
+markers = RGC_query
+markers_name = 'RGC'
+
+Astro_query = c('pax2a','pax2b','igf2a','igf2b','s100b','pdgfra')
+markers = Astro_query
+markers_name = 'Astro'
+
+### Not worked !!!! #####
+RPE_query = c('rpe65a','rpe65b','rpe65c','pmela','pmelb')
+markers = RPE_query
+markers_name = 'RPE'
+
+### 
+OnConeBC = c('tnnt1','scgn','grm6a','grm6b')
+markers = OnConeBC
+markers_name = 'OnConeBC'
+
+OffConeBC = c('grik1a','grik1b','klhdc8a')
+markers = OffConeBC
+markers_name = 'OffConeBC'
+
+Microglia = c('ptprc','csf2rb','tmem119b','tmem119a')
+markers = Microglia
+markers_name = 'Microglia'
+
+### 
+
+MG = c('rlbp1a','rlbp1b','glula','glulb','apoea','apoeb','aqp4','prdx6','vim','kncj10a')
+markers = MG
+markers_name = 'MG'
+
+#### onecut2 works #####
+HC = c('onecut2','lhx1b','onecut1','nefla','neflb','nefma','nefmb','gad1a','gad1b')
+markers = HC
+markers_name = 'HC'
+
+Pericytes = c('kcnj8','acta2','pdgfrb')
+markers = Pericytes
+markers_name = 'Pericytes'
+
+GlyAC = c('slc6a9','slc6a5')
+markers = GlyAC
+markers_name = 'GlyAC'
+
+GABAAC = c('gad2','slc6a1a','slc6a1b','slc32a1')
+markers = GABAAC
+markers_name = 'GABAAC'
+
+#### progenitor cells #####
+
+NG_cells = c('atoh7','btg2','gadd45aa','gadd45ab','gadd45ga','foxn4')
+markers = NG_cells
+markers_name = 'NG_cells'
+
+SCRNA_process_S5 <- function(output_folder,output_tags,markers,markers_name){
+	clean_file = paste(output_tags,'Seurat_RNA_merge_CTsm_filter',sep='_')
+	setwd(output_folder)
+	x = readRDS(file=clean_file)	
+	library(Seurat)
+	######## find Genes ######
+	features = Get_gene_names(rownames(x),markers)
+	###################################
+	png_file = paste(output_tags,'_',markers_name,'_features.png',sep='')
+	library(ggplot2)
+	png(png_file,height=8000,width=10000,res=72*12)
+	print(FeaturePlot(x, reduction = "umap.rna", features = features, label = FALSE, label.size = 2.5, repel = TRUE))
+	dev.off()
+	######## ################### ######
+}
+
+
+
+SCRNA_process_S3_revise <- function(output_folder,output_tags,seurat_query){
+	########
+	clean_file = paste(output_tags,'Seurat_RNA_clean_SSS_filter',sep='_')
+    setwd(output_folder)
+	x = readRDS(file=clean_file)
+	########
+	DefaultAssay(x) = 'SCT'
+	######## Run CCA piplines #######
+	########
+	library(future)
+	plan("multicore", workers = 30)
+	options(future.globals.maxSize = 10000 * 1024^2)
+	########
+	DefaultAssay(seurat_query) = 'RNA'
+	seurat_query = SCTransform(seurat_query, verbose = FALSE) %>% RunPCA()
+	######
+	#######
+	Xanchors <- FindTransferAnchors(reference = seurat_query, query = x,dims = 1:30, reference.reduction = "pca")
+	########
+	predictions <- TransferData(anchorset = Xanchors, refdata = seurat_query$celltypes,dims = 1:30)
+	x <- AddMetaData(x, metadata = predictions)
+	########
+	### plot the x annotations ########
+	########
+	######## x <- RunTSNE(x, nn.name = "weighted.nn", reduction.name = "wnn.tsne", reduction.key = "wnnTSNE_",dims = 1:35)
+	########
+	png_file = paste(output_tags,'_celltypes_umap.png',sep='')
+	library(ggplot2)
+	png(png_file,height=4000,width=6000,res=72*12)
+	print(DimPlot(x, reduction = "umap.rna", group.by = "predicted.id", label = TRUE, label.size = 2.5, repel = TRUE) + ggtitle("umap.rna"))
+	dev.off()
+	########
+	clean_file = paste(output_tags,'Seurat_RNA_merge_addCT',sep='_')
+    setwd(output_folder)
+	saveRDS(x,file=clean_file)
+	########
+	print('Done!!!!')
+}
 
 
 
