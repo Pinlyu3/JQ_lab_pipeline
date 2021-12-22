@@ -84,13 +84,13 @@ Muti_process_S3 <- function(output_folder,output_tags){
 	library(Seurat)
 	#######
 	setwd(output_folder)
-	clean_file = paste(output_tags,'Seurat_RNA_clean',sep='_')
+	clean_file = paste(output_tags,'Seurat_RNA_clean_SSS',sep='_')
 	print(clean_file)
 	#######
 	x = readRDS(clean_file)
 	#######
 	library(Matrix)
-    mat = x[['RNA']]@counts
+    mat = x[['SCT']]@counts
     gene = rownames(mat)
     gene = data.frame(V1=gene,V2=gene)
     barcode = colnames(mat)
