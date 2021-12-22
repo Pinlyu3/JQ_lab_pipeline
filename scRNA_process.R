@@ -261,3 +261,25 @@ SCRNA_process_S5 <- function(output_folder,output_tags){
 }
 
 
+
+Get_gene_names = function(input,query){
+	out = c()
+	for(i in 1:length(query)){
+		query_i = query[i]
+		print(query_i)
+		query_i = paste(query_i,'$',sep='')
+		k = grep(query_i,input)
+		if(length(k) > 0){
+			out_cl = input[k]
+			out = c(out,out_cl)
+		}else{
+			print('Not find')
+		}
+	}
+	return(out)
+}
+
+
+
+
+
