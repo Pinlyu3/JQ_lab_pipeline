@@ -304,7 +304,7 @@ SCRNA_process_S6 <- function(output_folder,output_tags,cutoff=0.25){
 	png_file = paste(output_tags,'_ct_filter.png',sep='')
 	library(ggplot2)
 	png(png_file,height=4000,width=6000,res=72*12)
-	print(DimPlot(x_cl, reduction = "umap.rna", group.by = "celltypes_sm", label = TRUE, label.size = 2.5, repel = TRUE) + ggtitle("RNA_umap"))
+	print(DimPlot(x_cl, reduction = "umap.rna", group.by = "predicted.id", label = TRUE, label.size = 2.5, repel = TRUE) + ggtitle("RNA_umap"))
 	dev.off()
 	#####
 	clean_file = paste(output_tags,'Seurat_RNA_merge_CTsm_filter',sep='_')
@@ -316,101 +316,67 @@ SCRNA_process_S6 <- function(output_folder,output_tags,cutoff=0.25){
 }
 
 
-##### plot test markers !!! ####################
-AC_query = c('tfap2b','proxla','calb2a','calb2b','elavl3')
-markers = AC_query
-markers_name = 'AC'
 
-Cone_query = c('opn1mw1','opn1mw2','opn1mw3','opn1mw4','opn1sw1','opn1sw2','thrb')
-markers = Cone_query
-markers_name = 'Cone'
-
-Rod_query = c('rho','nrl','gnat1','nr2e3')
-markers = Rod_query
-markers_name = 'Rod'
-
-BC_query = c('bhlhe23','cabp5a','cabp5b')
-markers = BC_query
-markers_name = 'BC'
-
-VE_query = c('pecam1','cdh5','tie1','tek')
-markers = VE_query
-markers_name = 'VE'
-
-Oligo_query = c('olig1','olig2','mbpa','mbpb')
-markers = Oligo_query
-markers_name = 'Oligo'
-
-RGC_query = c('isl2b','pou4f1','pou4f2','pou4f3','rbpms')
-markers = RGC_query
-markers_name = 'RGC'
-
-Astro_query = c('pax2a','pax2b','igf2a','igf2b','s100b','pdgfra')
-markers = Astro_query
-markers_name = 'Astro'
-
-### Not worked !!!! #####
-RPE_query = c('rpe65a','rpe65b','rpe65c','pmela','pmelb')
-markers = RPE_query
-markers_name = 'RPE'
-
-### 
-OnConeBC = c('tnnt1','scgn','grm6a','grm6b')
-markers = OnConeBC
-markers_name = 'OnConeBC'
-
-OffConeBC = c('grik1a','grik1b','klhdc8a')
-markers = OffConeBC
-markers_name = 'OffConeBC'
-
-Microglia = c('ptprc','csf2rb','tmem119b','tmem119a')
-markers = Microglia
-markers_name = 'Microglia'
-
-### 
-
-MG = c('rlbp1a','rlbp1b','glula','glulb','apoea','apoeb','aqp4','prdx6','vim','kncj10a')
-markers = MG
-markers_name = 'MG'
-
-#### onecut2 works #####
-HC = c('onecut2','lhx1b','onecut1','nefla','neflb','nefma','nefmb','gad1a','gad1b')
-markers = HC
-markers_name = 'HC'
-
-Pericytes = c('kcnj8','acta2','pdgfrb')
-markers = Pericytes
-markers_name = 'Pericytes'
-
-GlyAC = c('slc6a9','slc6a5')
-markers = GlyAC
-markers_name = 'GlyAC'
-
-GABAAC = c('gad2','slc6a1a','slc6a1b','slc32a1')
-markers = GABAAC
-markers_name = 'GABAAC'
-
-#### progenitor cells #####
-
-NG_cells = c('atoh7','btg2','gadd45aa','gadd45ab','gadd45ga','foxn4')
-markers = NG_cells
-markers_name = 'NG_cells'
-
-SCRNA_process_S5 <- function(output_folder,output_tags,markers,markers_name){
+SCRNA_process_S7 <- function(output_folder,output_tags,markers_list){
 	clean_file = paste(output_tags,'Seurat_RNA_merge_CTsm_filter',sep='_')
 	setwd(output_folder)
 	x = readRDS(file=clean_file)	
 	library(Seurat)
 	######## find Genes ######
-	features = Get_gene_names(rownames(x),markers)
+	for(i in 1:length(markers_list)){
+		features = Get_gene_names(rownames(x),markers_list[[i]])
+		print(features)
+		png_file = paste(output_tags,'_',names(markers_list)[i],'_features.png',sep='')
+		print(png_file)
+		library(ggplot2)
+		png(png_file,height=8000,width=10000,res=72*12)
+		print(FeaturePlot(x, reduction = "umap.rna", features = features, label = TRUE, label.size = 1, repel = TRUE))
+		dev.off()
+	}
 	###################################
-	png_file = paste(output_tags,'_',markers_name,'_features.png',sep='')
+	png_file = paste(output_tags,'_','Marker','_seurat_clusters.png',sep='')
+	print(png_file)
 	library(ggplot2)
 	png(png_file,height=8000,width=10000,res=72*12)
-	print(FeaturePlot(x, reduction = "umap.rna", features = features, label = FALSE, label.size = 2.5, repel = TRUE))
+	print(DimPlot(x, reduction = "umap.rna", group.by='seurat_clusters', label = TRUE, label.size = 5, repel = TRUE))
 	dev.off()
-	######## ################### ######
+	png_file = paste(output_tags,'_','Predict','_seurat_clusters.png',sep='')
+	print(png_file)
+	library(ggplot2)
+	png(png_file,height=8000,width=10000,res=72*12)
+	print(DimPlot(x, reduction = "umap.rna", group.by='predicted.id', label = TRUE, label.size = 5, repel = TRUE))
+	dev.off()
 }
+
+
+
+
+SCRNA_process_S8 <- function(output_folder,output_tags,celltype_list){
+	clean_file = paste(output_tags,'Seurat_RNA_merge_CTsm_filter',sep='_')
+	setwd(output_folder)
+	x = readRDS(file=clean_file)	
+	library(Seurat)
+	x$new_celltypes = 'Unknown'
+	######## find Genes ######
+	for(i in 1:length(celltype_list)){
+		print(celltype_list[[i]])
+		print(names(celltype_list)[i])
+		k = which(x$seurat_clusters %in% celltype_list[[i]] == T)
+		x$new_celltypes[k] = names(celltype_list)[i]
+	}
+	###################################
+	png_file = paste(output_tags,'_','Marker_new','.png',sep='')
+	print(png_file)
+	library(ggplot2)
+	png(png_file,height=6000,width=8000,res=72*12)
+	print(DimPlot(x, reduction = "umap.rna", group.by='new_celltypes', label = TRUE, label.size = 5, repel = TRUE))
+	dev.off()
+	###################################
+	clean_file = paste(output_tags,'Seurat_RNA_merge_CTsm_filter_Markers',sep='_')
+    setwd(output_folder)
+	saveRDS(x,file=clean_file)
+}
+
 
 
 
