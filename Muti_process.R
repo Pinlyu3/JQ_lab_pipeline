@@ -116,7 +116,7 @@ Muti_process_S4 <- function(output_folder,output_tags){
 	library(Seurat)
 	#######
 	setwd(output_folder)
-	clean_file = paste(output_tags,'Seurat_RNA_clean',sep='_')
+	clean_file = paste(output_tags,'Seurat_RNA_clean_SSS',sep='_')
 	print(clean_file)
 	#######
 	x = readRDS(clean_file)
@@ -128,7 +128,7 @@ Muti_process_S4 <- function(output_folder,output_tags){
     x$scrublet = score$V2[m]
     print(summary(x$scrublet))
     #######
-    clean_file = paste(output_tags,'Seurat_RNA_clean_S',sep='_')
+    clean_file = paste(output_tags,'Seurat_RNA_clean_SSS',sep='_')
 	saveRDS(x,file=clean_file)
     print('Done!')
 	#######
