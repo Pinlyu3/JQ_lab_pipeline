@@ -88,7 +88,7 @@ SCRNA_process_S1 <- function(matrix_folder,output_folder,output_tags,MT_tags,use
 
 
 
-SCRNA_process_S2 <- function(output_folder,output_tags){
+SCRNA_process_S2 <- function(output_folder,output_tags,vars.to.regress=T){
 	library(Seurat)
 	#######
 	setwd(output_folder)
@@ -102,7 +102,15 @@ SCRNA_process_S2 <- function(output_folder,output_tags){
 	options(future.globals.maxSize = 10000 * 1024^2)
 	######
 	library(dplyr)
-	x <- SCTransform(x, verbose = FALSE,vars.to.regress='percent.mt') %>% RunPCA() %>% RunUMAP(dims = 1:50, reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
+	######
+	if(vars.to.regress){
+		print(vars.to.regress)
+		x <- SCTransform(x, verbose = FALSE,vars.to.regress='percent.mt') %>% RunPCA() %>% RunUMAP(dims = 1:50, reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
+	}else{
+		print(vars.to.regress)
+		x <- SCTransform(x, verbose = FALSE) %>% RunPCA() %>% RunUMAP(dims = 1:50, reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
+	}
+	
 	x <- FindNeighbors(x, dims = 1:50)
 	###### names(x@graphs) #####
 	x <- FindClusters(x,algorithm = 3,verbose = FALSE)
