@@ -104,10 +104,10 @@ SCRNA_process_S2 <- function(output_folder,output_tags,vars.to.regress=T){
 	library(dplyr)
 	######
 	if(vars.to.regress){
-		print(vars.to.regress)
+		print('yes')
 		x <- SCTransform(x, verbose = FALSE,vars.to.regress='percent.mt') %>% RunPCA() %>% RunUMAP(dims = 1:50, reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
 	}else{
-		print(vars.to.regress)
+		print('no')
 		x <- SCTransform(x, verbose = FALSE) %>% RunPCA() %>% RunUMAP(dims = 1:50, reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
 	}
 	
