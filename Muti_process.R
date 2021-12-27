@@ -270,7 +270,7 @@ Muti_process_S5 <- function(output_folder,output_tags){
 	library(Seurat)
 	#######
 	setwd(output_folder)
-	clean_file = paste(output_tags,'Seurat_RNA_clean_S',sep='_')
+	clean_file = paste(output_tags,'Seurat_RNA_clean_SSS',sep='_')
 	print(clean_file)
 	#######
 	x = readRDS(clean_file)
@@ -286,7 +286,7 @@ Muti_process_S5 <- function(output_folder,output_tags){
     #######
     print(summary(x$ArchR))
     #######
-    clean_file = paste(output_tags,'Seurat_RNA_clean_SS',sep='_')
+    clean_file = paste(output_tags,'Seurat_RNA_clean_SSS',sep='_')
     setwd(output_folder)
 	saveRDS(x,file=clean_file)
     print('Done!')
