@@ -246,6 +246,7 @@ Get_gene_names = function(input,query){
 
 
 SCRNA_process_S6 <- function(output_folder,output_tags,cutoff=0.25){
+	library(Seurat)
 	clean_file = paste(output_tags,'Seurat_RNA_merge_addCT',sep='_')
     setwd(output_folder)
 	x = readRDS(file=clean_file)
@@ -253,11 +254,6 @@ SCRNA_process_S6 <- function(output_folder,output_tags,cutoff=0.25){
 	########
 	x_cl = x[,which(x$scrublet < cutoff)]
 	########
-	setwd(output_folder)
-	png_file = paste(output_tags,'_scrublet_filter.png',sep='')
-	png(png_file,height=4000,width=6000,res=72*12)
-	print(FeaturePlot(x_cl, reduction = "umap.rna", features=c('scrublet'), label.size = 2.5, repel = TRUE) + ggtitle("RNA_doublet"))
-	dev.off()
 	########
 	DefaultAssay(x_cl) = 'RNA'
 	######### recluster #######

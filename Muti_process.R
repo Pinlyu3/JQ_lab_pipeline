@@ -351,12 +351,13 @@ Muti_process_S7 <- function(output_folder,output_tags){
 	library(Seurat)
 	#######
 	setwd(output_folder)
-	clean_file = paste(output_tags,'Seurat_RNA_clean_SSS',sep='_')
+	clean_file = paste(output_tags,'Seurat_RNA_merge_addCT',sep='_')
 	print(clean_file)
 	#######
 	x = readRDS(clean_file)
 	###### rm cells not passed QC in scATACSeq #####
 	k = which(x$ArchR == -1 | is.na(x$ArchR) == T)
+	print(length(k))
 	if(length(k) > 0){
 		x = x[,-k]
 	}
@@ -364,7 +365,7 @@ Muti_process_S7 <- function(output_folder,output_tags){
 	######
 	######
 	library(future)
-	plan("multicore", workers = 2)
+	plan("multicore", workers = 1)
 	options(future.globals.maxSize = 10000 * 1024^2)
 	###### read the tileMatrix ######
 	library(SummarizedExperiment)
@@ -414,10 +415,49 @@ Muti_process_S7 <- function(output_folder,output_tags){
 	dev.off()
 	######
 	######
-	clean_file = paste(output_tags,'Seurat_RNA_clean_SSS_cl',sep='_')
+	clean_file = paste(output_tags,'Seurat_RNA_merge_addCT_tile',sep='_')
     setwd(output_folder)
     ######
 	saveRDS(x,file=clean_file)
+}
+
+
+
+SCRNA_process_S7.5 <- function(output_folder,output_tags,cutoff1=0.5,cutoff2=0.75){
+	library(Seurat)
+	clean_file = paste(output_tags,'Seurat_RNA_merge_addCT_tile',sep='_')
+    setwd(output_folder)
+	x = readRDS(file=clean_file)
+	######## ################### ######
+	print(summary(x$scrublet))
+	print(summary(x$ArchR))
+	########
+	x_cl = x[,which(x$scrublet < cutoff1 & x$ArchR < cutoff2)]
+	print(dim(x)[2])
+	print(dim(x_cl)[2])
+	########
+	########
+	DefaultAssay(x_cl) = 'RNA'
+	######### recluster #######
+	library(dplyr)
+	x_cl <- SCTransform(x_cl, verbose = FALSE) %>% RunPCA() %>% RunUMAP(dims = 1:50, reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
+	x_cl <- FindNeighbors(x_cl, dims = 1:50)
+	###### names(x@graphs) #####
+	x_cl <- FindClusters(x_cl,algorithm = 3,verbose = FALSE)
+	x_cl <- RunUMAP(x_cl,dims=1:50,reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
+	setwd(output_folder)
+	png_file = paste(output_tags,'_ct_filter.png',sep='')
+	library(ggplot2)
+	png(png_file,height=4000,width=6000,res=72*12)
+	print(DimPlot(x_cl, reduction = "umap.rna", group.by = "predicted.id", label = TRUE, label.size = 2.5, repel = TRUE) + ggtitle("RNA_umap"))
+	dev.off()
+	#####
+	clean_file = paste(output_tags,'Seurat_RNA_merge_addCT_tile_filter',sep='_')
+    setwd(output_folder)
+	saveRDS(x_cl,file=clean_file)
+	########
+	print('Done!!!!')
+
 }
 
 
