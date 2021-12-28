@@ -440,11 +440,11 @@ SCRNA_process_S7.5 <- function(output_folder,output_tags,cutoff1=0.5,cutoff2=0.7
 	DefaultAssay(x_cl) = 'RNA'
 	######### recluster #######
 	library(dplyr)
-	x_cl <- SCTransform(x_cl, verbose = FALSE) %>% RunPCA() %>% RunUMAP(dims = 1:50, reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
-	x_cl <- FindNeighbors(x_cl, dims = 1:50)
+	x_cl <- SCTransform(x_cl, verbose = FALSE) %>% RunPCA() %>% RunUMAP(dims = 1:35, reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
+	x_cl <- FindNeighbors(x_cl, dims = 1:35)
 	###### names(x@graphs) #####
 	x_cl <- FindClusters(x_cl,algorithm = 3,verbose = FALSE)
-	x_cl <- RunUMAP(x_cl,dims=1:50,reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
+	x_cl <- RunUMAP(x_cl,dims=1:35,reduction.name = 'umap.rna', reduction.key = 'rnaUMAP_')
 	setwd(output_folder)
 	png_file = paste(output_tags,'_ct_filter.png',sep='')
 	library(ggplot2)
