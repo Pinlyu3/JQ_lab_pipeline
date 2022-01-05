@@ -278,10 +278,42 @@ SCRNA_process_S6 <- function(output_folder,output_tags,cutoff=0.25){
 
 }
 
-
+#####
 
 SCRNA_process_S7 <- function(output_folder,output_tags,markers_list){
 	clean_file = paste(output_tags,'Seurat_RNA_merge_CTsm_filter',sep='_')
+	setwd(output_folder)
+	x = readRDS(file=clean_file)	
+	library(Seurat)
+	######## find Genes ######
+	for(i in 1:length(markers_list)){
+		features = Get_gene_names(rownames(x),markers_list[[i]])
+		print(features)
+		png_file = paste(output_tags,'_',names(markers_list)[i],'_features.png',sep='')
+		print(png_file)
+		library(ggplot2)
+		png(png_file,height=8000,width=10000,res=72*12)
+		print(FeaturePlot(x, reduction = "umap.rna", features = features, label = TRUE, label.size = 1, repel = TRUE))
+		dev.off()
+	}
+	###################################
+	png_file = paste(output_tags,'_','Marker','_seurat_clusters.png',sep='')
+	print(png_file)
+	library(ggplot2)
+	png(png_file,height=8000,width=10000,res=72*12)
+	print(DimPlot(x, reduction = "umap.rna", group.by='seurat_clusters', label = TRUE, label.size = 5, repel = TRUE))
+	dev.off()
+	png_file = paste(output_tags,'_','Predict','_seurat_clusters.png',sep='')
+	print(png_file)
+	library(ggplot2)
+	png(png_file,height=8000,width=10000,res=72*12)
+	print(DimPlot(x, reduction = "umap.rna", group.by='predicted.id', label = TRUE, label.size = 5, repel = TRUE))
+	dev.off()
+}
+
+
+SCRNA_process_S9 <- function(output_folder,output_tags,markers_list){
+	clean_file = paste(output_tags,'Seurat_RNA_merge_addCT_tile_filter',sep='_')
 	setwd(output_folder)
 	x = readRDS(file=clean_file)	
 	library(Seurat)
