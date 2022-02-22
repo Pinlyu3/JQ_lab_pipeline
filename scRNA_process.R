@@ -98,7 +98,7 @@ SCRNA_process_S2 <- function(output_folder,output_tags,vars.to.regress=T){
 	x = readRDS(clean_file)
 	######
 	library(future)
-	plan("multiprocess", workers = 30)
+	plan("multiprocess", workers = 10)
 	options(future.globals.maxSize = 10000 * 1024^2)
 	######
 	library(dplyr)
